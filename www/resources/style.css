@@ -1,0 +1,62 @@
+table.formtable {
+	width: 100%;
+}
+table.formtable tr td.name {
+	text-align: right;
+	vertical-align: top;
+	padding-right: .6em;
+}
+table.formtable tr td.value {
+	text-align: left;
+	padding: 0px;
+}
+table.formtable tr td.header {
+	padding-left: 5px;
+	padding-top: 8px;
+	font-weight: bold;
+	font-size: 110%;
+}
+
+table.formtable tr td input,table.formtable tr td textarea {
+	width: 90%;
+	border: 1px solid #bbb;
+	margin: 2px 5px;
+	padding: 2px 4px;
+}
+
+
+table.metalist {
+	border: 0;
+	width: 100%;
+	margin-bottom: 10px;
+}
+table.metalist tr {
+	border: 1px solid black;
+}
+table.metalist tr td {
+	padding: 10px 5px;
+}
+table.metalist tr td.desc {
+	background: #e5e5e5;
+	font-variant: small-caps;
+}
+
+.btn, .btn:visited, .btn:link {
+  -webkit-border-radius: 0;
+     -moz-border-radius: 0;
+          border-radius: 0px;
+  -webkit-box-shadow: 0px 1px 3px #666666;
+     -moz-box-shadow: 0px 1px 3px #666666;
+          box-shadow: 0px 1px 3px #666666;
+  border: 1.1px solid transparent!important;
+  color: #000000;
+  font-size: 12px;
+  background: #ffffff;
+  padding: 5px 10px;
+  text-decoration: none!important;
+}
+
+.btn:hover {
+  background: #eeeeee;
+  text-decoration: none;
+}
