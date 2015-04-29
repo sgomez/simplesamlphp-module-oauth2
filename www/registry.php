@@ -1,27 +1,30 @@
 <?php
 
+use SimpleSAML\Utils\Auth;
+use SimpleSAML\Utils\HTTP;
+
 $config = SimpleSAML_Configuration::getInstance();
 $session = SimpleSAML_Session::getSessionFromRequest();
 $oauthconfig = SimpleSAML_Configuration::getOptionalConfig( 'module_oauth2.php' );
 
-SimpleSAML_Utilities::requireAdmin();
+Auth::requireAdmin();
 
 $store = new sspmod_oauth2_OAuth2Store();
 
 if ( isset( $_REQUEST['delete'] ) ) {
     $client = $store->getClient( $_REQUEST['delete'] );
     if ( $client ) {
-      $store->deleteClient( $client );
+        $store->deleteClient( $client );
     }
-  SimpleSAML_Utilities::redirectTrustedURL( 'registry.php' );
+    HTTP::redirectTrustedURL( 'registry.php' );
 }
 
 if (isset($_REQUEST['restore'])) {
-  $client = $store->getClient($_REQUEST['restore']);
-  if ( $client ) {
-    $store->restoreClient( $client );
-  }
-  SimpleSAML_Utilities::redirectTrustedURL( 'registry.php' );
+    $client = $store->getClient($_REQUEST['restore']);
+    if ( $client ) {
+        $store->restoreClient( $client );
+    }
+    HTTP::redirectTrustedURL( 'registry.php' );
 }
 
 $clients = $store->getClients();
