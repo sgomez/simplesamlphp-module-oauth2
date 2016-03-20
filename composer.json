@@ -1,0 +1,27 @@
+{
+    "name": "sgomez/simplesamlphp-module-oauth2",
+    "description": "A SimpleSAMLphp module adding support for the OAuth2 protocol.",
+    "type": "simplesamlphp-module",
+    "keywords": [ "oauth2" ],
+    "license": "LGPL-2.1",
+    "authors": [
+        {
+            "name": "Sergio Gómez",
+            "email": "sergio@uco.es"
+        }
+    ],
+    "autoload": {
+    "psr-0": {
+        "SimpleSAML\\Modules\\OAuth2\\": "lib"
+        }
+    },
+    "require": {
+        "simplesamlphp/composer-module-installer": "~1.0",
+        "league/oauth2-server": "dev-V5-WIP"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    }
+}
