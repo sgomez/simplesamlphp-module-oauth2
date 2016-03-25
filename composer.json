@@ -16,8 +16,14 @@
         }
     },
     "require": {
+        "php"                                       : ">=5.5.9",
         "simplesamlphp/composer-module-installer"   : "~1.0",
-        "league/oauth2-server"                      : "~5.0@dev"
+        "league/oauth2-server"                      : "~5.0@dev",
+        "sgomez/simplesamlphp-module-dbal"          : "~1.0@dev",
+        "symfony/http-foundation"                   : "~2.3|~3.0"
+    },
+    "require-dev": {
+        "simplesamlphp/simplesamlphp"               : "^1.14"
     },
     "extra": {
         "branch-alias": {
