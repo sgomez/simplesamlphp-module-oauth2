@@ -16,8 +16,8 @@
         }
     },
     "require": {
-        "simplesamlphp/composer-module-installer": "~1.0",
-        "league/oauth2-server": "dev-V5-WIP"
+        "simplesamlphp/composer-module-installer"   : "~1.0",
+        "league/oauth2-server"                      : "~5.0@dev"
     },
     "extra": {
         "branch-alias": {
