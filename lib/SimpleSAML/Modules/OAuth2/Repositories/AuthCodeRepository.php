@@ -21,13 +21,25 @@ class AuthCodeRepository extends AbstractDBALRepository implements AuthCodeRepos
      */
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
+        $scopes = [];
+        foreach ($authCodeEntity->getScopes() as $scope) {
+            $scopes[] = $scope->getIdentifier();
+        }
+
         $this->conn->insert($this->getTableName(), [
             'id' => $authCodeEntity->getIdentifier(),
-            'scopes' => $authCodeEntity->getScopes(),
+            'scopes' => $scopes,
             'expires_at' => $authCodeEntity->getExpiryDateTime(),
-            'user_id' => $authCodeEntity->getUserIdentifier(),
+            'user_id' => json_encode($authCodeEntity->getUserIdentifier()),
             'client_id' => $authCodeEntity->getClient()->getIdentifier(),
             'redirect_uri' => $authCodeEntity->getRedirectUri(),
+        ], [
+            'string',
+            'simple_array',
+            'datetime',
+            'string',
+            'string',
+            'string',
         ]);
     }
 

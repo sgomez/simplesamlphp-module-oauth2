@@ -13,19 +13,20 @@ namespace SimpleSAML\Modules\OAuth2;
 
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Server;
+use SimpleSAML\Modules\OAuth2\Renderer\SimpleSAMLRenderer;
 use SimpleSAML\Modules\OAuth2\Repositories\AccessTokenRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\AuthCodeRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\ClientRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\RefreshTokenRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\ScopeRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\UserRepository;
+use SimpleSAML\Modules\Twig\Facade\Twig;
+use SimpleSAML\Modules\Twig\TwigEngine;
 use SimpleSAML\Utils\Config;
 
 class OAuth2Server
 {
     private static $instance;
-
-    private static $prefix;
 
     public static function getInstance()
     {
@@ -58,7 +59,12 @@ class OAuth2Server
                 $authTokenRepository,
                 $refreshTokenRepository,
                 $userRepository,
-                new \DateInterval('PT10M')
+                new \DateInterval('PT10M'),
+                new SimpleSAMLRenderer(
+                    Twig::getInstance(),
+                    null,
+                    '@oauth2/authorize.html.twig'
+                )
             ),
             new \DateInterval('PT1H')
         );

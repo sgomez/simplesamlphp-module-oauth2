@@ -12,28 +12,10 @@ namespace SimpleSAML\Modules\OAuth2\Repositories;
 
 
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-use OAuth2ServerExamples\Entities\ClientEntity;
-use SimpleSAML\Modules\DBAL\Store\DBAL;
+use SimpleSAML\Modules\OAuth2\Model\Client;
 
-class ClientRepository implements ClientRepositoryInterface
+class ClientRepository extends AbstractDBALRepository implements ClientRepositoryInterface
 {
-    /**
-     * @var DBAL
-     */
-    private $store;
-
-    /**
-     * ClientRepository constructor.
-     */
-    public function __construct()
-    {
-        $this->store = SimpleSAML_Store::getInstance();
-
-        if (! $this->store instanceof DBAL) {
-            throw new \SimpleSAML_Error_Exception('OAuth2 module: Only DBAL Store is supported');
-        }
-    }
-
     /**
      * @inheritDoc
      */
@@ -49,13 +31,33 @@ class ClientRepository implements ClientRepositoryInterface
             return;
         }
 
-        $client = new ClientEntity();
+        $client = new Client();
         $client->setIdentifier($clientIdentifier);
         $client->setName($entity['name']);
         $client->setRedirectUri($entity['redirect_uri']);
         $client->setSecret($entity['secret']);
 
         return $client;
+    }
+
+    public function persistNewClient($id, $secret, $name, $description, $redirectUri)
+    {
+        $this->conn->insert($this->getTableName(), [
+            'id' => $id,
+            'secret' => $secret,
+            'name' => $name,
+            'description' => $description,
+            'redirect_uri' => $redirectUri,
+            'scopes' => serialize(['basic']),
+        ]);
+    }
+
+    public function delete($clientIdentifier)
+    {
+        $conn = $this->store->getConnection();
+        $conn->delete($this->getTableName(), [
+            'id' => $clientIdentifier
+        ]);
     }
 
     public function find($clientIdentifier)
@@ -67,6 +69,16 @@ class ClientRepository implements ClientRepositoryInterface
         $stmt->execute();
 
         return $stmt->fetch();
+    }
+
+    public function findAll()
+    {
+        $sql = 'SELECT * FROM '.$this->getTableName();
+        $conn = $this->store->getConnection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function getTableName()

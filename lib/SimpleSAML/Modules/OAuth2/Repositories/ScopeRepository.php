@@ -13,7 +13,7 @@ namespace SimpleSAML\Modules\OAuth2\Repositories;
 
 use League\OAuth2\Server\Entities\Interfaces\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
-use OAuth2ServerExamples\Entities\ScopeEntity;
+use SimpleSAML\Modules\OAuth2\Model\Scope;
 
 class ScopeRepository implements ScopeRepositoryInterface
 {
@@ -22,7 +22,7 @@ class ScopeRepository implements ScopeRepositoryInterface
      */
     public function getScopeEntityByIdentifier($identifier)
     {
-        $oauth2config = SimpleSAML_Configuration::getConfig('module_oauth2.php');
+        $oauth2config = \SimpleSAML_Configuration::getConfig('module_oauth2.php');
 
         $scopes = $oauth2config->getArray('scopes');
 
@@ -30,8 +30,11 @@ class ScopeRepository implements ScopeRepositoryInterface
             return;
         }
 
-        $scope = new ScopeEntity();
+        $scope = new Scope();
         $scope->setIdentifier($identifier);
+        $scope->setIcon($scopes[$identifier]['icon']);
+        $scope->setDescription($scopes[$identifier]['description']);
+        $scope->setAttributes($scopes[$identifier]['attributes']);
 
         return $scope;
     }
