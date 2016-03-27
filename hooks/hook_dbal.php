@@ -16,7 +16,7 @@ function oauth2_hook_dbal(&$dbinfo)
     $client->addColumn('secret', 'string', [ 'length' => 255 ]);
     $client->addColumn('name', 'string', [ 'length' => 255 ]);
     $client->addColumn('description', 'text', [ 'notnull' => false ]);
-    $client->addColumn('redirect_uri', 'simple_array');
+    $client->addColumn('redirect_uri', 'text');
     $client->addColumn('scopes', 'simple_array');
     $client->setPrimaryKey(['id']);
 
@@ -48,7 +48,7 @@ function oauth2_hook_dbal(&$dbinfo)
     $authcode->addColumn('user_id', 'string', [ 'length' => 255 ]);
     $authcode->addColumn('client_id', 'string', [ 'length' => 255 ]);
     $authcode->addColumn('is_revoked', 'boolean', [ 'default' => false ]);
-    $authcode->addColumn('return_uri', 'text');
+    $authcode->addColumn('redirect_uri', 'text');
     $authcode->addForeignKeyConstraint($clientTable, ['client_id'], ['id']);
 
     $store->createOrUpdateSchema($schema, $store->getPrefix().'_oauth2');

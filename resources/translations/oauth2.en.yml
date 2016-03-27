@@ -1,0 +1,5 @@
+title.authorization: Authorization | %title%
+title.wants_to_know: %client% wants to know...
+title.wants_to_share: Do you want to share this information?
+button.allow: Allow
+button.deny: Deny

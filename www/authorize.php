@@ -9,18 +9,33 @@
  */
 
 use SimpleSAML\Modules\OAuth2\OAuth2Server;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Zend\Diactoros\Response;
+use Zend\Diactoros\ServerRequestFactory;
 
-$server = new OAuth2Server();
+try {
+    $oauthconfig = \SimpleSAML_Configuration::getOptionalConfig( 'module_oauth2.php' );
+    $as = $oauthconfig->getString('auth');
+    $useridattr = $oauthconfig->getString('useridattr');
 
-$request = Request::createFromGlobals();
-$response = Response::create();
+    $auth = new \SimpleSAML_Auth_Simple($as);
+    $auth->requireAuth();
 
-$response = $server->getInstance()->respondToRequest($request, $response);
+    $attributes = $auth->getAttributes();
+    $userid = \SimpleSAML\Modules\OAuth2\Utils\Crypt::getInstance()->cryptUserId($auth->getAttributes());
+    $_COOKIE['oauth_authorize_request'] = $userid;
 
-var_dump($response);
+    $server = OAuth2Server::getInstance();
+    $request = ServerRequestFactory::fromGlobals();
+    $response = $server->respondToRequest($request, new Response());
 
-$config = SimpleSAML_Configuration::getInstance();
-$template = new SimpleSAML_XHTML_Template( $config, 'oauth2:consent.php' );
-$template->show();
+    $emiter = new Response\SapiEmitter();
+    $emiter->emit($response);
+
+} catch (Exception $e) {
+
+    header('Content-type: text/plain; utf-8', TRUE, 500);
+    header('OAuth-Error: ' . $e->getMessage());
+
+    print_r($e);
+
+}
