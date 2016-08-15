@@ -11,6 +11,7 @@
 namespace SimpleSAML\Modules\OAuth2\Utils;
 
 
+use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\CryptTrait;
 use SimpleSAML\Utils\Config;
 
@@ -31,18 +32,19 @@ class Crypt
 
         self::$instance = new Crypt();
 
-        self::$instance->setPrivateKeyPath($privateKey);
-        self::$instance->setPublicKeyPath($publicKey);
+        self::$instance->setPrivateKey(new CryptKey($privateKey));
+        self::$instance->setPublicKey(new CryptKey($publicKey));
 
         return self::$instance;
     }
 
-    public function cryptUserId($userId)
+    public function cryptAttributes(array $attributes)
     {
-        return $this->encrypt(
-            json_encode([
-                'user_id' => $userId,
-            ])
-        );
+        return $this->encrypt(json_encode($attributes));
+    }
+
+    public function decryptAttributes($message)
+    {
+        return json_decode($this->decrypt($message), true);
     }
 }

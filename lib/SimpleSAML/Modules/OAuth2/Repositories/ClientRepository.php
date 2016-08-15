@@ -12,15 +12,16 @@ namespace SimpleSAML\Modules\OAuth2\Repositories;
 
 
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-use SimpleSAML\Modules\OAuth2\Model\Client;
+use SimpleSAML\Modules\OAuth2\Entity\ClientEntity;
 
 class ClientRepository extends AbstractDBALRepository implements ClientRepositoryInterface
 {
     /**
      * @inheritDoc
      */
-    public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null)
+    public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
     {
+        /** @var \SimpleSAML\Modules\OAuth2\Entity\ClientEntity $entity */
         $entity = $this->find($clientIdentifier);
 
         if (!$entity) {
@@ -31,7 +32,7 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
             return;
         }
 
-        $client = new Client();
+        $client = new ClientEntity();
         $client->setIdentifier($clientIdentifier);
         $client->setName($entity['name']);
         $client->setRedirectUri($entity['redirect_uri']);
@@ -48,7 +49,14 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
             'name' => $name,
             'description' => $description,
             'redirect_uri' => $redirectUri,
-            'scopes' => serialize(['basic']),
+            'scopes' => ['basic'],
+        ], [
+            'string',
+            'string',
+            'string',
+            'string',
+            'string',
+            'simple_array'
         ]);
     }
 

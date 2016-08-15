@@ -23,7 +23,7 @@ function oauth2_hook_dbal(&$dbinfo)
     $accesstokenTable = $store->getPrefix().'_oauth2_accesstoken';
     $accesstoken = $schema->createTable($accesstokenTable);
     $accesstoken->addColumn('id', 'string', [ 'length' => 255 ]);
-    $accesstoken->addColumn('scopes', 'simple_array');
+    $accesstoken->addColumn('scopes', 'simple_array', [ 'notnull' => false ]);
     $accesstoken->addColumn('expires_at', 'datetime');
     $accesstoken->addColumn('user_id', 'string', [ 'length' => 255 ]);
     $accesstoken->addColumn('client_id', 'string', [ 'length' => 255 ]);

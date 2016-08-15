@@ -8,7 +8,10 @@
  * file that was distributed with this source code.
  */
 
+
+use SimpleSAML\Modules\OAuth2\Entity\UserEntity;
 use SimpleSAML\Modules\OAuth2\OAuth2Server;
+use SimpleSAML\Modules\OAuth2\Utils\Crypt;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 
@@ -21,12 +24,15 @@ try {
     $auth->requireAuth();
 
     $attributes = $auth->getAttributes();
-    $userid = \SimpleSAML\Modules\OAuth2\Utils\Crypt::getInstance()->cryptUserId($auth->getAttributes());
-    $_COOKIE['oauth_authorize_request'] = $userid;
+    $userid = Crypt::getInstance()->cryptAttributes($attributes);
 
     $server = OAuth2Server::getInstance();
     $request = ServerRequestFactory::fromGlobals();
-    $response = $server->respondToRequest($request, new Response());
+
+    $authRequest = $server->validateAuthorizationRequest($request);
+    $authRequest->setUser(new UserEntity($userid));
+    $authRequest->setAuthorizationApproved(true);
+    $response = $server->completeAuthorizationRequest($authRequest, new Response());
 
     $emiter = new Response\SapiEmitter();
     $emiter->emit($response);

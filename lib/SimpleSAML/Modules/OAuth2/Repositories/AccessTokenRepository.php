@@ -11,23 +11,54 @@
 namespace SimpleSAML\Modules\OAuth2\Repositories;
 
 
-use League\OAuth2\Server\Entities\Interfaces\AccessTokenEntityInterface;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
+use SimpleSAML\Modules\OAuth2\Entity\AccessTokenEntity;
 
 class AccessTokenRepository extends AbstractDBALRepository implements AccessTokenRepositoryInterface
 {
     /**
      * @inheritDoc
      */
+    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
+    {
+        $accessToken = new AccessTokenEntity();
+        $accessToken->setClient($clientEntity);
+        foreach ($scopes as $scope) {
+            $accessToken->addScope($scope);
+        }
+        $accessToken->setUserIdentifier($userIdentifier);
+
+        return $accessToken;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
-        $this->conn->insert($this->getTableName(), [
-            'id' => $accessTokenEntity->getIdentifier(),
-            'scopes' => $accessTokenEntity->getScopes(),
-            'expires_at' => $accessTokenEntity->getExpiryDateTime(),
-            'user_id' => $accessTokenEntity->getUserIdentifier(),
-            'client_id' => $accessTokenEntity->getClient()->getIdentifier(),
-        ]);
+        $scopes = [];
+        foreach ($accessTokenEntity->getScopes() as $scope) {
+            $scopes[] = $scope->getIdentifier();
+        }
+
+        $this->conn->insert(
+            $this->getTableName(),
+            [
+                'id' => $accessTokenEntity->getIdentifier(),
+                'scopes' => $scopes,
+                'expires_at' => $accessTokenEntity->getExpiryDateTime(),
+                'user_id' => $accessTokenEntity->getUserIdentifier(),
+                'client_id' => $accessTokenEntity->getClient()->getIdentifier()
+            ], [
+                'string',
+                'simple_array',
+                'datetime',
+                'string',
+                'string',
+            ]
+        );
     }
 
     /**
@@ -44,6 +75,21 @@ class AccessTokenRepository extends AbstractDBALRepository implements AccessToke
     public function isAccessTokenRevoked($tokenId)
     {
         return $this->conn->fetchColumn('SELECT is_revoked FROM '.$this->getTableName().' WHERE id = ?', [$tokenId]);
+    }
+
+    public function removeExpiredAccessTokens()
+    {
+        $this->conn->executeUpdate('
+                DELETE FROM '.$this->getTableName().'
+                WHERE expires_at < ?
+            ',
+            [
+                new \DateTime(),
+            ],
+            [
+                'datetime',
+            ]
+        );
     }
 
     public function getTableName()

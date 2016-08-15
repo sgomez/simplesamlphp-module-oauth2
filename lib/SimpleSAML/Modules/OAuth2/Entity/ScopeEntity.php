@@ -8,13 +8,13 @@
  * file that was distributed with this source code.
  */
 
-namespace SimpleSAML\Modules\OAuth2\Model;
+namespace SimpleSAML\Modules\OAuth2\Entity;
 
 
-use League\OAuth2\Server\Entities\Interfaces\ScopeEntityInterface;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 
-class Scope implements ScopeEntityInterface
+class ScopeEntity implements ScopeEntityInterface
 {
     use EntityTrait;
 

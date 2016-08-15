@@ -12,16 +12,13 @@ namespace SimpleSAML\Modules\OAuth2;
 
 
 use League\OAuth2\Server\Grant\AuthCodeGrant;
-use League\OAuth2\Server\Server;
-use SimpleSAML\Modules\OAuth2\Renderer\SimpleSAMLRenderer;
+use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\Grant\ImplicitGrant;
 use SimpleSAML\Modules\OAuth2\Repositories\AccessTokenRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\AuthCodeRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\ClientRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\RefreshTokenRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\ScopeRepository;
-use SimpleSAML\Modules\OAuth2\Repositories\UserRepository;
-use SimpleSAML\Modules\Twig\Facade\Twig;
-use SimpleSAML\Modules\Twig\TwigEngine;
 use SimpleSAML\Utils\Config;
 
 class OAuth2Server
@@ -41,12 +38,11 @@ class OAuth2Server
         $accessTokenRepository = new AccessTokenRepository();
         $authTokenRepository = new AuthCodeRepository();
         $refreshTokenRepository = new RefreshTokenRepository();
-        $userRepository = new UserRepository();
 
         $privateKey = Config::getCertPath('oauth2_module.pem');
         $publicKey = Config::getCertPath('oauth2_module.crt');
 
-        self::$instance = new Server(
+        self::$instance = new AuthorizationServer(
             $clientRepository,
             $accessTokenRepository,
             $scopeRepository,
@@ -54,18 +50,22 @@ class OAuth2Server
             $publicKey
         );
 
+        $authCodeGrant = new AuthCodeGrant(
+            $authTokenRepository,
+            $refreshTokenRepository,
+            new \DateInterval('PT10M')
+        );
+        $authCodeGrant->setRefreshTokenTTL(new \DateInterval('P1M')); // refresh tokens will expire after 1 month
+
         self::$instance->enableGrantType(
-            new AuthCodeGrant(
-                $authTokenRepository,
-                $refreshTokenRepository,
-                $userRepository,
-                new \DateInterval('PT10M'),
-                new SimpleSAMLRenderer(
-                    Twig::getInstance(),
-                    null,
-                    '@oauth2/authorize.html.twig'
-                )
-            ),
+            $authCodeGrant,
+            new \DateInterval('PT1H')
+        );
+
+        $implicitGrant = new ImplicitGrant(new \DateInterval('PT1H'));
+
+        self::$instance->enableGrantType(
+            $implicitGrant,
             new \DateInterval('PT1H')
         );
 
