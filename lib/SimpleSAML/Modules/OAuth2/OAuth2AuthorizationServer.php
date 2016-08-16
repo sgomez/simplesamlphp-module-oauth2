@@ -34,7 +34,7 @@ class OAuth2AuthorizationServer
         $oauth2config = \SimpleSAML_Configuration::getConfig('module_oauth2.php');
         $authCodeDuration = $oauth2config->getString('authCodeDuration');
         $refreshTokenDuration = $oauth2config->getString('refreshTokenDuration');
-        $authTokenDuration = $oauth2config->getString('authTokenDuration');
+        $accessTokenDuration = $oauth2config->getString('accessTokenDuration');
 
         $privateKey = Config::getCertPath('oauth2_module.pem');
         $publicKey = Config::getCertPath('oauth2_module.crt');
@@ -56,14 +56,14 @@ class OAuth2AuthorizationServer
 
         self::$instance->enableGrantType(
             $authCodeGrant,
-            new \DateInterval($authTokenDuration)
+            new \DateInterval($accessTokenDuration)
         );
 
-        $implicitGrant = new ImplicitGrant(new \DateInterval($authTokenDuration));
+        $implicitGrant = new ImplicitGrant(new \DateInterval($accessTokenDuration));
 
         self::$instance->enableGrantType(
             $implicitGrant,
-            new \DateInterval($authTokenDuration)
+            new \DateInterval($accessTokenDuration)
         );
 
         return self::$instance;
