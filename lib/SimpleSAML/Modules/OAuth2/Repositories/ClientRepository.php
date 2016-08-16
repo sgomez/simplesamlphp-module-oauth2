@@ -106,8 +106,10 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
             ]
         );
 
-        $client['redirect_uri'] = $this->conn->convertToPHPValue($client['redirect_uri'], 'json_array' );
-        $client['scopes'] = $this->conn->convertToPHPValue($client['scopes'], 'json_array' );
+        if ($client) {
+            $client['redirect_uri'] = $this->conn->convertToPHPValue($client['redirect_uri'], 'json_array' );
+            $client['scopes'] = $this->conn->convertToPHPValue($client['scopes'], 'json_array' );
+        }
 
         return $client;
     }
