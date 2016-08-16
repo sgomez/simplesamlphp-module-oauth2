@@ -44,7 +44,7 @@ class AuthCodeRepository extends AbstractDBALRepository implements AuthCodeRepos
             'redirect_uri' => $authCodeEntity->getRedirectUri(),
         ], [
             'string',
-            'simple_array',
+            'json_array',
             'datetime',
             'string',
             'string',

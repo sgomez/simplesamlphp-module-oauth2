@@ -53,7 +53,7 @@ class AccessTokenRepository extends AbstractDBALRepository implements AccessToke
                 'client_id' => $accessTokenEntity->getClient()->getIdentifier()
             ], [
                 'string',
-                'simple_array',
+                'json_array',
                 'datetime',
                 'string',
                 'string',
