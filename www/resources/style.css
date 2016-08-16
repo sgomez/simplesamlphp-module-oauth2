@@ -41,22 +41,21 @@ table.metalist tr td.desc {
 	font-variant: small-caps;
 }
 
-.btn, .btn:visited, .btn:link {
-  -webkit-border-radius: 0;
-     -moz-border-radius: 0;
-          border-radius: 0px;
-  -webkit-box-shadow: 0px 1px 3px #666666;
-     -moz-box-shadow: 0px 1px 3px #666666;
-          box-shadow: 0px 1px 3px #666666;
-  border: 1.1px solid transparent!important;
-  color: #000000;
-  font-size: 12px;
-  background: #ffffff;
-  padding: 5px 10px;
-  text-decoration: none!important;
+.btn {
+	background-color:#ffffff;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#666666;
+	font-size:12px;
+	padding:5px 12px;
+	margin-right: 5px;
+	text-decoration:none;
 }
-
 .btn:hover {
-  background: #eeeeee;
-  text-decoration: none;
+	background-color:#f6f6f6;
+}
+.btn:active {
+	position:relative;
+	top:1px;
 }

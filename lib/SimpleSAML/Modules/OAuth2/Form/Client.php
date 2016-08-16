@@ -13,25 +13,33 @@ class Client
 {
 	protected function getStandardField($request, &$entry, $key, $multiline = false) {
 		if (array_key_exists('field_' . $key, $request)) {
-			$entry[$key] = $multiline ? explode( "\n", $request['field_' . $key] ) : $request['field_' . $key] ;
+			$entry[$key] = $request['field_' . $key] ;
 		} else {
 			if (isset($entry[$key])) unset($entry[$key]);
 		}
 	}
 
-	public function formToMeta($request, $entry = array(), $override = NULL) {
+    protected function getArrayField($request, &$entry, $key)
+	{
+        if (array_key_exists('field_' . $key, $request)) {
+            $entry[$key] = preg_split("/[\t\r\n]+/", $request['field_' . $key]);
+        } else {
+            if (isset($entry[$key])) unset($entry[$key]);
+        }
+	}
+
+	public function formToMeta($request, $entry = [], $override = NULL) {
 		$this->getStandardField($request, $entry, 'name');
 		$this->getStandardField($request, $entry, 'description');
-		$this->getStandardField($request, $entry, 'redirect_uri');
+		$this->getArrayField($request, $entry, 'redirect_uri');
 		$this->getStandardField($request, $entry, 'id');
-		$this->getStandardField($request, $entry, 'secret');
 
 		if ($override) {
 			foreach($override AS $key => $value) {
 				$entry[$key] = $value;
 			}
 		}
-		
+
 		return $entry;
 	}
 
@@ -73,8 +81,14 @@ class Client
 
 	}
 	
-	protected function hiddenField($key, $value) {
-		return '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($value) . '" />';
+	protected function hiddenField($metadata, $key) {
+        if (array_key_exists($key, $metadata)) {
+            $value = htmlspecialchars($metadata[$key]);
+        } else {
+            $value = '';
+        }
+
+		return '<input type="hidden" name="field_' . $key . '" value="' . htmlspecialchars($value) . '" />';
 	}
 	
 	protected function flattenLanguageField(&$metadata, $key) {
@@ -102,15 +116,15 @@ class Client
 
 
 	protected function standardField($metadata, $key, $name, $textarea = FALSE) {
-		$value = '';
 		if (array_key_exists($key, $metadata)) {
 			$value = htmlspecialchars($metadata[$key]);
-		}
+		} else {
+		    $value = '';
+        }
 		
 		if ($textarea) {
 			return '<tr><td class="name">' . $name . '</td><td class="data">
 			<textarea name="field_' . $key . '" rows="5" cols="50">' . $value . '</textarea></td></tr>';
-			
 		} else {
 			return '<tr><td class="name">' . $name . '</td><td class="data">
 			<input type="text" size="60" name="field_' . $key . '" value="' . $value . '" /></td></tr>';
@@ -118,23 +132,22 @@ class Client
 		}
 	}
 
-	public function metaToForm($metadata) {
-		
-		return '<form action="registry.edit.php" method="post">' .		
-			'<div id="tabdiv">' .
+	public function metaToForm($metadata)
+    {
+		return '<div id="tabdiv">' .
 			'<ul>' .
-			'<li><a href="#basic">Name and descrition</a></li>' . 
+			'<li><a href="#basic">Name and description</a></li>' .
 			'</ul>' .
 			'<div id="basic"><table class="formtable">' .
 				$this->standardField($metadata, 'name', 'Name of client') .
-				$this->standardField($metadata, 'description', 'Description of client', TRUE) .
-				$this->standardField($metadata, 'redirect_uri', 'Static/enforcing callback-url') .
+				$this->standardField($metadata, 'description', 'Description of client', true) .
+				$this->arrayField($metadata, 'redirect_uri', 'Static/enforcing callback-url (one per line)') .
 
-				$this->hiddenField('field_client_id', $metadata['id']) .
-				$this->hiddenField('field_client_id', $metadata['secret']) .
+				$this->hiddenField($metadata, 'id') .
 			'</table></div>' .
 			'</div>' .
-			'<input type="submit" name="submit" value="Save" style="margin-top: 5px" />' .
-		'</form>';
+			'<input class="btn" type="submit" name="submit" value="Save" style="margin-top: 5px" />' .
+            '<a class="btn" href="registry.php">Return to entity listing <strong>without saving...</strong></a>'
+		;
 	}
 }

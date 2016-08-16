@@ -11,8 +11,10 @@
 namespace SimpleSAML\Modules\OAuth2\Repositories;
 
 
+use Doctrine\DBAL\Types\JsonArrayType;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use SimpleSAML\Modules\OAuth2\Entity\ClientEntity;
+use SimpleSAML\Utils\Random;
 
 class ClientRepository extends AbstractDBALRepository implements ClientRepositoryInterface
 {
@@ -43,6 +45,14 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
 
     public function persistNewClient($id, $secret, $name, $description, $redirectUri)
     {
+        if (false === is_array($redirectUri)) {
+            if (is_string($redirectUri)) {
+                $redirectUri = [$redirectUri];
+            } else {
+                throw new \InvalidArgumentException('Client redirect URI must be a string or an array.');
+            }
+        }
+
         $this->conn->insert($this->getTableName(), [
             'id' => $id,
             'secret' => $secret,
@@ -55,8 +65,25 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
             'string',
             'string',
             'string',
+            'json_array',
+            'json_array'
+        ]);
+    }
+
+    public function updateClient($id, $name, $description, $redirectUri)
+    {
+        $this->conn->update($this->getTableName(), [
+            'name' => $name,
+            'description' => $description,
+            'redirect_uri' => $redirectUri,
+            'scopes' => ['basic'],
+        ], [
+            'id' => $id,
+        ], [
             'string',
-            'simple_array'
+            'string',
+            'json_array',
+            'json_array'
         ]);
     }
 
@@ -70,27 +97,49 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
 
     public function find($clientIdentifier)
     {
-        $sql = 'SELECT * FROM '.$this->getTableName().' WHERE id = :id';
-        $conn = $this->store->getConnection();
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam('id', $clientIdentifier);
-        $stmt->execute();
+        $client = $this->conn->fetchAssoc(
+            'SELECT * FROM '.$this->getTableName().' WHERE id = ?',
+            [
+                $clientIdentifier
+            ], [
+                'string'
+            ]
+        );
 
-        return $stmt->fetch();
+        $client['redirect_uri'] = $this->conn->convertToPHPValue($client['redirect_uri'], 'json_array' );
+        $client['scopes'] = $this->conn->convertToPHPValue($client['scopes'], 'json_array' );
+
+        return $client;
     }
 
     public function findAll()
     {
-        $sql = 'SELECT * FROM '.$this->getTableName();
-        $conn = $this->store->getConnection();
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
+        $clients = $this->conn->fetchAll(
+            'SELECT * FROM '.$this->getTableName()
+        );
 
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($clients as &$client) {
+            $client['redirect_uri'] = $this->conn->convertToPHPValue($client['redirect_uri'], 'json_array' );
+            $client['scopes'] = $this->conn->convertToPHPValue($client['scopes'], 'json_array' );
+        }
+
+        return $clients;
     }
 
     public function getTableName()
     {
         return $this->store->getPrefix().'_oauth2_client';
+    }
+
+    public function restoreSecret($clientIdentifier)
+    {
+        $secret = Random::generateID();
+        $this->conn->update($this->getTableName(), [
+            'secret' => $secret,
+        ], [
+            'id' => $clientIdentifier,
+        ], [
+            'string'
+        ]);
     }
 }

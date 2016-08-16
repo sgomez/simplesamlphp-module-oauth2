@@ -11,8 +11,8 @@
 namespace SimpleSAML\Modules\OAuth2;
 
 
-use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
 use SimpleSAML\Modules\OAuth2\Repositories\AccessTokenRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\AuthCodeRepository;
@@ -21,7 +21,7 @@ use SimpleSAML\Modules\OAuth2\Repositories\RefreshTokenRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\ScopeRepository;
 use SimpleSAML\Utils\Config;
 
-class OAuth2Server
+class OAuth2AuthorizationServer
 {
     private static $instance;
 
@@ -32,41 +32,38 @@ class OAuth2Server
         }
 
         $oauth2config = \SimpleSAML_Configuration::getConfig('module_oauth2.php');
-
-        $clientRepository =  new ClientRepository();
-        $scopeRepository = new ScopeRepository();
-        $accessTokenRepository = new AccessTokenRepository();
-        $authTokenRepository = new AuthCodeRepository();
-        $refreshTokenRepository = new RefreshTokenRepository();
+        $authCodeDuration = $oauth2config->getString('authCodeDuration');
+        $refreshTokenDuration = $oauth2config->getString('refreshTokenDuration');
+        $authTokenDuration = $oauth2config->getString('authTokenDuration');
 
         $privateKey = Config::getCertPath('oauth2_module.pem');
         $publicKey = Config::getCertPath('oauth2_module.crt');
 
         self::$instance = new AuthorizationServer(
-            $clientRepository,
-            $accessTokenRepository,
-            $scopeRepository,
+            new ClientRepository(),
+            new AccessTokenRepository(),
+            new ScopeRepository(),
             $privateKey,
             $publicKey
         );
 
         $authCodeGrant = new AuthCodeGrant(
-            $authTokenRepository,
-            $refreshTokenRepository,
-            new \DateInterval('PT10M')
+            new AuthCodeRepository(),
+            new RefreshTokenRepository(),
+            new \DateInterval($authCodeDuration)
         );
-        $authCodeGrant->setRefreshTokenTTL(new \DateInterval('P1M')); // refresh tokens will expire after 1 month
+        $authCodeGrant->setRefreshTokenTTL(new \DateInterval($refreshTokenDuration)); // refresh tokens will expire after 1 month
 
         self::$instance->enableGrantType(
             $authCodeGrant,
-            new \DateInterval('PT1H')
+            new \DateInterval($authTokenDuration)
         );
 
-        $implicitGrant = new ImplicitGrant(new \DateInterval('PT1H'));
+        $implicitGrant = new ImplicitGrant(new \DateInterval($authTokenDuration));
 
         self::$instance->enableGrantType(
             $implicitGrant,
-            new \DateInterval('PT1H')
+            new \DateInterval($authTokenDuration)
         );
 
         return self::$instance;

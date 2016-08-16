@@ -16,8 +16,8 @@ function oauth2_hook_dbal(&$dbinfo)
     $client->addColumn('secret', 'string', [ 'length' => 255 ]);
     $client->addColumn('name', 'string', [ 'length' => 255 ]);
     $client->addColumn('description', 'text', [ 'notnull' => false ]);
-    $client->addColumn('redirect_uri', 'text');
-    $client->addColumn('scopes', 'simple_array');
+    $client->addColumn('redirect_uri', 'json_array');
+    $client->addColumn('scopes', 'json_array');
     $client->setPrimaryKey(['id']);
 
     $accesstokenTable = $store->getPrefix().'_oauth2_accesstoken';

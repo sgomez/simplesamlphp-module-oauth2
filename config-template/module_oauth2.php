@@ -9,9 +9,9 @@
  */
 
 $config = [
-    'accessTokenDuration'  => 3600, // 60 minutes
-    'requestTokenDuration' => 1209600, // 14 days
-    'authTokenDuration'    => 30, // 30 seconds
+    'authCodeDuration' => 'PT10M', // 10 minutes
+    'refreshTokenDuration' => 'P1M', // 1 month
+    'accessTokenDuration' => 'PT1H', // 1 hour,
 
     // Tag to run storage cleanup script using the cron module...
     'cron_tag' => 'hourly',
@@ -19,10 +19,8 @@ $config = [
     // auth is the idp to use for admin authentication,
     'auth' => 'default-sp',
 
-    // useridattr is the attribute-name that contains the userid as returned from idp
-    'useridattr' => 'uid',
-
     // You can create as many scopes as you want and assign attributes to them
+    // TODO
     'scopes' => [
         'basic' => [
             'icon' => 'user',

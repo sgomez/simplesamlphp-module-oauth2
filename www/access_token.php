@@ -9,14 +9,12 @@
  */
 
 
-use SimpleSAML\Modules\OAuth2\OAuth2Server;
+use SimpleSAML\Modules\OAuth2\OAuth2AuthorizationServer;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 
-
 try {
-
-    $server = OAuth2Server::getInstance();
+    $server = OAuth2AuthorizationServer::getInstance();
     $request = ServerRequestFactory::fromGlobals();
 
     $response = $server->respondToAccessTokenRequest($request, new Response());

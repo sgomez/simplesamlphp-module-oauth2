@@ -9,7 +9,7 @@ function oauth2_hook_frontpage(&$links) {
     assert('array_key_exists("links", $links)');
 
     $links['federation']['oauthregistry'] = [
-        'href' => SimpleSAML_Module::getModuleURL('oauth2/registry.php'),
+        'href' => SimpleSAML\Module::getModuleURL('oauth2/registry.php'),
         'text' => [
             'en' => 'OAuth2 Client Registry',
             'es' => 'Registro de clientes OAuth2',

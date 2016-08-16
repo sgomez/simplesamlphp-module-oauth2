@@ -14,6 +14,6 @@ $this->includeAtTemplateBase('includes/header.php');
 
 echo('<h1>OAuth Client</h1>');
 
-echo '<form action="registry.edit.php" method="post">' . $this->data['form'] . '</form>';
+echo '<form action="registry.new.php" method="post">' . $this->data['form'] . '</form>';
 
 $this->includeAtTemplateBase('includes/footer.php');

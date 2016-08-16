@@ -22,7 +22,7 @@ if (!empty($this->data['clients'])) {
 		$echorow('Description', htmlspecialchars($client['description']));
 		$echorow('Client ID', htmlspecialchars($client['id']));
 		$echorow('Client Secret', htmlspecialchars($client['secret']));
-		$echorow('Redirect URI', htmlspecialchars($client['redirect_uri']));
+		$echorow('Redirect URI', htmlspecialchars(implode(', ', $client['redirect_uri'])));
 		echo ('<tr><td colspan="2">
 					 <a class="btn" href="registry.edit.php?editkey=' . urlencode($client['id']) . '">Edit Config</a>
 					 <a class="btn confirm" href="registry.php?restore=' . urlencode($client['id']) . '">Restore Secret</a>
@@ -37,6 +37,6 @@ if (!empty($this->data['clients'])) {
   echo('</table>');
 }
 
-echo('<p><a class="btn" href="registry.edit.php">Add new client</a></p>');
+echo('<p><a class="btn" href="registry.new.php">Add new client</a></p>');
 
 $this->includeAtTemplateBase('includes/footer.php');
