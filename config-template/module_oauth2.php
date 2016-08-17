@@ -9,6 +9,10 @@
  */
 
 $config = [
+
+    // The private key passphrase (optional)
+    // 'pass_phrase' => 'secret',
+
     'authCodeDuration' => 'PT10M', // 10 minutes
     'refreshTokenDuration' => 'P1M', // 1 month
     'accessTokenDuration' => 'PT1H', // 1 hour,
@@ -18,6 +22,8 @@ $config = [
 
     // auth is the idp to use for admin authentication,
     'auth' => 'default-sp',
+    // useridattr is the attribute-name that contains the userid as returned from idp
+    'useridattr' => 'uid',
 
     // You can create as many scopes as you want and assign attributes to them
     // TODO

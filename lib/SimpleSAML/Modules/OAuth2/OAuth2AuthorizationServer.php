@@ -12,6 +12,7 @@ namespace SimpleSAML\Modules\OAuth2;
 
 
 use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
 use SimpleSAML\Modules\OAuth2\Repositories\AccessTokenRepository;
@@ -32,12 +33,15 @@ class OAuth2AuthorizationServer
         }
 
         $oauth2config = \SimpleSAML_Configuration::getConfig('module_oauth2.php');
-        $authCodeDuration = $oauth2config->getString('authCodeDuration');
-        $refreshTokenDuration = $oauth2config->getString('refreshTokenDuration');
         $accessTokenDuration = $oauth2config->getString('accessTokenDuration');
+        $authCodeDuration = $oauth2config->getString('authCodeDuration');
+        $passPhrase = $oauth2config->getString('pass_phrase', null);
+        $refreshTokenDuration = $oauth2config->getString('refreshTokenDuration');
 
-        $privateKey = Config::getCertPath('oauth2_module.pem');
-        $publicKey = Config::getCertPath('oauth2_module.crt');
+        $privateKeyPath = Config::getCertPath('oauth2_module.pem');
+        $publicKeyPath = Config::getCertPath('oauth2_module.crt');
+        $privateKey = new CryptKey($privateKeyPath, $passPhrase);
+        $publicKey = new CryptKey($publicKeyPath);
 
         self::$instance = new AuthorizationServer(
             new ClientRepository(),

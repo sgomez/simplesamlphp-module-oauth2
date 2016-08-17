@@ -11,6 +11,7 @@
 namespace SimpleSAML\Modules\OAuth2;
 
 
+use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\ResourceServer;
 use SimpleSAML\Modules\OAuth2\Repositories\AccessTokenRepository;
 use SimpleSAML\Utils\Config;
@@ -25,7 +26,8 @@ class OAuth2ResourceServer
             return self::$instance;
         }
 
-        $publicKey = Config::getCertPath('oauth2_module.crt');
+        $publicKeyPath = Config::getCertPath('oauth2_module.crt');
+        $publicKey = new CryptKey($publicKeyPath);
 
         self::$instance = new ResourceServer(
             new AccessTokenRepository(),
