@@ -24,6 +24,7 @@ function oauth2_hook_dbal(&$dbinfo)
     $accesstoken = $schema->createTable($accesstokenTable);
     $accesstoken->addColumn('id', 'string', [ 'length' => 255 ]);
     $accesstoken->addColumn('scopes', 'json_array', [ 'notnull' => false ]);
+    $accesstoken->addColumn('attributes', 'json_array', [ 'notnull' => false ]);
     $accesstoken->addColumn('expires_at', 'datetime');
     $accesstoken->addColumn('user_id', 'string', [ 'length' => 255 ]);
     $accesstoken->addColumn('client_id', 'string', [ 'length' => 255 ]);

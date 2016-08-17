@@ -27,10 +27,16 @@ abstract class AbstractDBALRepository
     protected $conn;
 
     /**
+     * @var \SimpleSAML_Configuration
+     */
+    protected $config;
+
+    /**
      * ClientRepository constructor.
      */
     public function __construct()
     {
+        $this->config = \SimpleSAML_Configuration::getOptionalConfig( 'module_oauth2.php' );
         $this->store = \SimpleSAML_Store::getInstance();
 
         if (! $this->store instanceof DBAL) {

@@ -12,7 +12,6 @@ use SimpleSAML\Modules\OAuth2\Form\Client;
 use SimpleSAML\Modules\OAuth2\Repositories\ClientRepository;
 use SimpleSAML\Utils\Auth;
 use SimpleSAML\Utils\HTTP;
-use SimpleSAML\Utils\Random;
 
 /* Load simpleSAMLphp, configuration and metadata */
 $config = SimpleSAML_Configuration::getInstance();

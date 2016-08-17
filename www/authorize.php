@@ -11,19 +11,22 @@
 
 use SimpleSAML\Modules\OAuth2\Entity\UserEntity;
 use SimpleSAML\Modules\OAuth2\OAuth2AuthorizationServer;
-use SimpleSAML\Modules\OAuth2\Utils\Crypt;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 
 try {
     $oauth2config = \SimpleSAML_Configuration::getOptionalConfig( 'module_oauth2.php' );
+    $useridattr = $oauth2config->getString('useridattr');
 
     $as = $oauth2config->getString('auth');
     $auth = new \SimpleSAML_Auth_Simple($as);
     $auth->requireAuth();
 
     $attributes = $auth->getAttributes();
-    $userid = Crypt::getInstance()->cryptAttributes($attributes);
+    if (!isset($attributes[$useridattr])) {
+        throw new \Exception('Oauth2 useridattr doesn\'t exists. Available attributes are: '.implode(", ", $attributes));
+    }
+    $userid = $attributes[$useridattr][0];
 
     $server = OAuth2AuthorizationServer::getInstance();
     $request = ServerRequestFactory::fromGlobals();
@@ -33,6 +36,7 @@ try {
     $authRequest->setAuthorizationApproved(true);
 
     $response = $server->completeAuthorizationRequest($authRequest, new Response());
+
     $emiter = new Response\SapiEmitter();
     $emiter->emit($response);
 } catch (Exception $e) {

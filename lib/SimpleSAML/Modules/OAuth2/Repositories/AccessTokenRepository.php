@@ -28,7 +28,7 @@ class AccessTokenRepository extends AbstractDBALRepository implements AccessToke
         foreach ($scopes as $scope) {
             $accessToken->addScope($scope);
         }
-        $accessToken->setUserIdentifier($userIdentifier);
+        $accessToken->setAttributes($userIdentifier);
 
         return $accessToken;
     }
@@ -38,6 +38,11 @@ class AccessTokenRepository extends AbstractDBALRepository implements AccessToke
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
+        $as = $this->config->getString('auth');
+        $auth = new \SimpleSAML_Auth_Simple($as);
+        // We should be authenticated so this returns the session user attributes (or [] if not)
+        $attributes = $auth->getAttributes();
+
         $scopes = [];
         foreach ($accessTokenEntity->getScopes() as $scope) {
             $scopes[] = $scope->getIdentifier();
@@ -48,17 +53,29 @@ class AccessTokenRepository extends AbstractDBALRepository implements AccessToke
             [
                 'id' => $accessTokenEntity->getIdentifier(),
                 'scopes' => $scopes,
+                'attributes' => $attributes,
                 'expires_at' => $accessTokenEntity->getExpiryDateTime(),
                 'user_id' => $accessTokenEntity->getUserIdentifier(),
                 'client_id' => $accessTokenEntity->getClient()->getIdentifier()
             ], [
                 'string',
                 'json_array',
+                'json_array',
                 'datetime',
                 'string',
                 'string',
             ]
         );
+    }
+
+    public function getAttributes($tokenId)
+    {
+        $attributes = $this->conn->fetchColumn(
+            'SELECT attributes FROM ' . $this->getTableName() . ' WHERE id = ?',
+            [$tokenId]
+        );
+
+        return $this->conn->convertToPHPValue($attributes, 'json_array');
     }
 
     /**
@@ -74,21 +91,18 @@ class AccessTokenRepository extends AbstractDBALRepository implements AccessToke
      */
     public function isAccessTokenRevoked($tokenId)
     {
-        return $this->conn->fetchColumn('SELECT is_revoked FROM '.$this->getTableName().' WHERE id = ?', [$tokenId]);
+        return $this->conn->fetchColumn(
+            'SELECT is_revoked FROM '.$this->getTableName().' WHERE id = ?',
+            [$tokenId]
+        );
     }
 
     public function removeExpiredAccessTokens()
     {
-        $this->conn->executeUpdate('
-                DELETE FROM '.$this->getTableName().'
-                WHERE expires_at < ?
-            ',
-            [
-                new \DateTime(),
-            ],
-            [
-                'datetime',
-            ]
+        $this->conn->executeUpdate(
+            'DELETE FROM '.$this->getTableName().' WHERE expires_at < ?',
+            [new \DateTime()],
+            ['datetime']
         );
     }
 

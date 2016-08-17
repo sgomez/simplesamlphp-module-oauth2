@@ -11,7 +11,6 @@
 namespace SimpleSAML\Modules\OAuth2\Repositories;
 
 
-use Doctrine\DBAL\Types\JsonArrayType;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use SimpleSAML\Modules\OAuth2\Entity\ClientEntity;
 use SimpleSAML\Utils\Random;
