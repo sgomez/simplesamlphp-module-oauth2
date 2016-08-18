@@ -1,29 +1,29 @@
-table.formtable {
+table {
 	width: 100%;
 }
-table.formtable tr td.name {
+table tr th {
 	text-align: right;
 	vertical-align: top;
 	padding-right: .6em;
 }
-table.formtable tr td.value {
+table tr td {
 	text-align: left;
 	padding: 0px;
+	width: 60%;
 }
-table.formtable tr td.header {
+table tr td.header {
 	padding-left: 5px;
 	padding-top: 8px;
 	font-weight: bold;
 	font-size: 110%;
 }
 
-table.formtable tr td input,table.formtable tr td textarea {
+table tr td input,table tr td textarea {
 	width: 90%;
 	border: 1px solid #bbb;
 	margin: 2px 5px;
 	padding: 2px 4px;
 }
-
 
 table.metalist {
 	border: 0;
@@ -36,26 +36,27 @@ table.metalist tr {
 table.metalist tr td {
 	padding: 10px 5px;
 }
-table.metalist tr td.desc {
+table.metalist tr th {
 	background: #e5e5e5;
 	font-variant: small-caps;
 }
 
-.btn {
+.button {
 	background-color:#ffffff;
 	border:1px solid #dcdcdc;
 	display:inline-block;
 	cursor:pointer;
-	color:#666666;
+	color:#666666!important;
 	font-size:12px;
 	padding:5px 12px;
 	margin-right: 5px;
 	text-decoration:none;
+	width: auto;
 }
-.btn:hover {
+.button:hover {
 	background-color:#f6f6f6;
 }
-.btn:active {
+.button:active {
 	position:relative;
 	top:1px;
 }

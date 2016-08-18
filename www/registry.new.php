@@ -8,43 +8,38 @@
  * file that was distributed with this source code.
  */
 
-use SimpleSAML\Modules\OAuth2\Form\Client;
+use SimpleSAML\Modules\OAuth2\Form\ClientForm;
 use SimpleSAML\Modules\OAuth2\Repositories\ClientRepository;
 use SimpleSAML\Utils\Auth;
 use SimpleSAML\Utils\HTTP;
 use SimpleSAML\Utils\Random;
 
 /* Load simpleSAMLphp, configuration and metadata */
+$action = \SimpleSAML\Module::getModuleURL('oauth2/registry.new.php');
 $config = SimpleSAML_Configuration::getInstance();
-$session = SimpleSAML_Session::getSessionFromRequest();
-$oauth2config = SimpleSAML_Configuration::getOptionalConfig( 'module_oauth2.php' );
 
 Auth::requireAdmin();
 
-$clientRepository = new ClientRepository();
-$editor = new Client();
+$form = new ClientForm('client');
+$form->setAction($action);
 
-if ( isset( $_POST['submit'] ) ) {
-    $editor->checkForm( $_POST );
+if ( $form->isSubmitted() && $form->isSuccess() ) {
+    $client = $form->getValues();
+    $client['id'] = Random::generateID();
+    $client['secret'] = Random::generateID();
 
-    $entry = $editor->formToMeta( $_POST, [], [] );
-    $entry['id'] = Random::generateID();
-    $entry['secret'] = Random::generateID();
-
+    $clientRepository = new ClientRepository();
     $clientRepository->persistNewClient(
-        $entry['id'],
-        $entry['secret'],
-        $entry['name'],
-        $entry['description'],
-        $entry['redirect_uri']
+        $client['id'],
+        $client['secret'],
+        $client['name'],
+        $client['description'],
+        $client['redirect_uri']
     );
 
     HTTP::redirectTrustedURL( 'registry.php' );
 }
 
-$entry = [];
-$form = $editor->metaToForm($entry);
-
-$template = new SimpleSAML_XHTML_Template( $config, 'oauth2:registry.new.php' );
+$template = new SimpleSAML_XHTML_Template( $config, 'oauth2:registry_new' );
 $template->data['form'] = $form;
 $template->show();

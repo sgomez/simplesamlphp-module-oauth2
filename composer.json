@@ -19,21 +19,17 @@
         "php"                                       : ">=5.5.9",
         "simplesamlphp/composer-module-installer"   : "~1.0",
         "league/oauth2-server"                      : "~5.0",
-        "sgomez/simplesamlphp-module-dbal"          : "~1.0@dev",
+        "nette/forms"                               : "~2.4",
+        "sgomez/simplesamlphp-module-dbal"          : "~1.0",
         "zendframework/zend-diactoros"              : "~1.3"
     },
     "require-dev": {
-        "simplesamlphp/simplesamlphp"               : "^1.14"
+        "simplesamlphp/simplesamlphp"               : "dev-master as 2.0",
+        "simplesamlphp/saml2"                       : "dev-master#00e38f85b417be1e10a2d738dd2f5ea82edb472c as 2.2"
     },
     "extra": {
         "branch-alias": {
             "dev-master": "2.0.x-dev"
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "../simplesamlphp-module-twig"
-        }
-    ]
+    }
 }

@@ -8,40 +8,44 @@
  * file that was distributed with this source code.
  */
 
-use SimpleSAML\Modules\OAuth2\Form\Client;
+use SimpleSAML\Modules\OAuth2\Form\ClientForm;
 use SimpleSAML\Modules\OAuth2\Repositories\ClientRepository;
 use SimpleSAML\Utils\Auth;
 use SimpleSAML\Utils\HTTP;
 
-/* Load simpleSAMLphp, configuration and metadata */
-$config = SimpleSAML_Configuration::getInstance();
-$session = SimpleSAML_Session::getSessionFromRequest();
-$oauthconfig = SimpleSAML_Configuration::getOptionalConfig( 'module_oauth2.php' );
-
 Auth::requireAdmin();
 
+/* Load simpleSAMLphp, configuration and metadata */
+$client_id = $_REQUEST['id'];
+$action = \SimpleSAML\Module::getModuleURL('oauth2/registry.edit.php', ['id' => $client_id]);
+$config = SimpleSAML_Configuration::getInstance();
+
 $clientRepository = new ClientRepository();
-$editor = new Client();
+$client = $clientRepository->find($client_id);
+if (!$client) {
+    header('Content-type: text/plain; utf-8', TRUE, 500);
 
-if ( isset( $_POST['submit'] ) ) {
-    $editor->checkForm( $_POST );
+    print('Client not found');
+    return;
+}
 
-    $entry = $editor->formToMeta( $_POST, [], [] );
+$form = new ClientForm('client');
+$form->setAction($action);
+$form->setDefaults($client);
+
+if ($form->isSubmitted() && $form->isSuccess()) {
+    $client = $form->getValues();
 
     $clientRepository->updateClient(
-        $entry['id'],
-        $entry['name'],
-        $entry['description'],
-        $entry['redirect_uri']
+        $client_id,
+        $client['name'],
+        $client['description'],
+        $client['redirect_uri']
     );
 
     HTTP::redirectTrustedURL( 'registry.php' );
 }
 
-$entry = $clientRepository->find($_REQUEST['editkey']);
-
-$form = $editor->metaToForm($entry);
-
-$template = new SimpleSAML_XHTML_Template( $config, 'oauth2:registry.edit.php' );
+$template = new SimpleSAML_XHTML_Template( $config, 'oauth2:registry_edit' );
 $template->data['form'] = $form;
 $template->show();
