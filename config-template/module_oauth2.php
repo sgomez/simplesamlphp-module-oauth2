@@ -9,10 +9,10 @@
  */
 
 $config = [
-
     // The private key passphrase (optional)
     // 'pass_phrase' => 'secret',
 
+    // Tokens TTL
     'authCodeDuration' => 'PT10M', // 10 minutes
     'refreshTokenDuration' => 'P1M', // 1 month
     'accessTokenDuration' => 'PT1H', // 1 hour,
@@ -20,13 +20,13 @@ $config = [
     // Tag to run storage cleanup script using the cron module...
     'cron_tag' => 'hourly',
 
-    // auth is the idp to use for admin authentication,
+    // this is the auth source used for authentication,
     'auth' => 'default-sp',
     // useridattr is the attribute-name that contains the userid as returned from idp
     'useridattr' => 'uid',
 
     // You can create as many scopes as you want and assign attributes to them
-    // TODO
+    // WIP: Actually only basic scope is supported with all the attributes
     'scopes' => [
         'basic' => [
             'icon' => 'user',
@@ -35,14 +35,6 @@ $config = [
                 'es' => 'Su nombre de usuario.'
             ],
             'attributes' => ['uid'],
-        ],
-        'email' => [
-            'icon' => 'mail',
-            'description' => [
-                'en' => 'Your email.',
-                'es' => 'Su dirección de correo.'
-            ],
-            'attributes' => ['email'],
         ],
     ],
 ];

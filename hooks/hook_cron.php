@@ -32,8 +32,10 @@ function oauth2_hook_cron(&$croninfo) {
 
         $accessTokenRepository = new AccessTokenRepository();
         $accessTokenRepository->removeExpiredAccessTokens();
+
         $authTokenRepository = new AuthCodeRepository();
         $authTokenRepository->removeExpiredAuthCodes();
+
         $refreshTokenRepository = new RefreshTokenRepository();
         $refreshTokenRepository->removeExpiredRefreshTokens();
 
