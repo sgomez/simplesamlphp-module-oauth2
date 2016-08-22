@@ -42,7 +42,7 @@ function oauth2_hook_cron(&$croninfo) {
         $croninfo['summary'][] = 'OAuth2 clean up. Removed expired entries from OAuth2 storage.';
 
     } catch (Exception $e) {
-        $message = 'OAuth clean up cron script failed: ' . $e->getMessage();
+        $message = 'OAuth2 clean up cron script failed: ' . $e->getMessage();
         SimpleSAML\Logger::warning($message);
         $croninfo['summary'][] = $message;
     }
