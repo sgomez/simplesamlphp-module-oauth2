@@ -24,7 +24,7 @@ function oauth2_hook_cron(&$croninfo) {
 
     try {
 
-        $store = SimpleSAML_Store::getInstance();
+        $store = \SimpleSAML\Store::getInstance();
 
         if (! $store instanceof \SimpleSAML\Modules\DBAL\Store\DBAL ) {
             throw new \SimpleSAML_Error_Exception('OAuth2 module: Only DBAL Store is supported');

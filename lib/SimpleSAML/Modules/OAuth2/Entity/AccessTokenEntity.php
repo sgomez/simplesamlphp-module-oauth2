@@ -19,22 +19,4 @@ use League\OAuth2\Server\Entities\Traits\TokenEntityTrait;
 class AccessTokenEntity implements AccessTokenEntityInterface
 {
     use AccessTokenTrait, TokenEntityTrait, EntityTrait;
-
-    private $attributes;
-
-    /**
-     * @return mixed
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    /**
-     * @param mixed $attributes
-     */
-    public function setAttributes($attributes)
-    {
-        $this->attributes = $attributes;
-    }
 }

@@ -11,6 +11,7 @@
 
 use SimpleSAML\Modules\OAuth2\OAuth2ResourceServer;
 use SimpleSAML\Modules\OAuth2\Repositories\AccessTokenRepository;
+use SimpleSAML\Modules\OAuth2\Repositories\UserRepository;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 
@@ -24,8 +25,11 @@ try {
     $tokenId = $oauth2Attributes['oauth_access_token_id'];
 
     $accessTokenRepository = new AccessTokenRepository();
-    $attributes['attributes'] = $accessTokenRepository->getAttributes($tokenId);
-    $attributes['username'] = $oauth2Attributes['oauth_user_id'];
+    $userId = $accessTokenRepository->getUserId($tokenId);
+
+    $userRepository = new UserRepository();
+    $attributes['attributes'] = $userRepository->getAttributes($userId);
+    $attributes['username'] = $userId;
 
     $response = new Response\JsonResponse($attributes);
 

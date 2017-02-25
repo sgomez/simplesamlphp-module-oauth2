@@ -39,7 +39,7 @@ class AuthCodeRepository extends AbstractDBALRepository implements AuthCodeRepos
             'id' => $authCodeEntity->getIdentifier(),
             'scopes' => $scopes,
             'expires_at' => $authCodeEntity->getExpiryDateTime(),
-            'user_id' => json_encode($authCodeEntity->getUserIdentifier()),
+            'user_id' => $authCodeEntity->getUserIdentifier(),
             'client_id' => $authCodeEntity->getClient()->getIdentifier(),
             'redirect_uri' => $authCodeEntity->getRedirectUri(),
         ], [

@@ -21,11 +21,28 @@ class UserEntity implements UserEntityInterface
     private $identifier;
 
     /**
+     * @var array
+     */
+    private $attributes;
+
+    /**
+     * @var \DateTime
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     */
+    private $updatedAt;
+
+    /**
      * @inheritDoc
      */
     public function __construct($identifier)
     {
         $this->identifier = $identifier;
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = $this->createdAt;
     }
 
     /**
@@ -42,5 +59,53 @@ class UserEntity implements UserEntityInterface
     public function setIdentifier($identifier)
     {
         $this->identifier = $identifier;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * @param array $attributes
+     */
+    public function setAttributes($attributes)
+    {
+        $this->attributes = $attributes;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
     }
 }

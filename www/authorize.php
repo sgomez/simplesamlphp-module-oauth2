@@ -11,6 +11,7 @@
 
 use SimpleSAML\Modules\OAuth2\Entity\UserEntity;
 use SimpleSAML\Modules\OAuth2\OAuth2AuthorizationServer;
+use SimpleSAML\Modules\OAuth2\Repositories\UserRepository;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 
@@ -27,6 +28,10 @@ try {
         throw new \Exception('Oauth2 useridattr doesn\'t exists. Available attributes are: '.implode(", ", $attributes));
     }
     $userid = $attributes[$useridattr][0];
+
+    // Persists the user attributes on the database
+    $userRepository = new UserRepository();
+    $userRepository->insertOrCreate($userid, $attributes);
 
     $server = OAuth2AuthorizationServer::getInstance();
     $request = ServerRequestFactory::fromGlobals();

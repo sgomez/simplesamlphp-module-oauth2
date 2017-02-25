@@ -37,7 +37,7 @@ abstract class AbstractDBALRepository
     public function __construct()
     {
         $this->config = \SimpleSAML_Configuration::getOptionalConfig( 'module_oauth2.php' );
-        $this->store = \SimpleSAML_Store::getInstance();
+        $this->store = \SimpleSAML\Store::getInstance();
 
         if (! $this->store instanceof DBAL) {
             throw new \SimpleSAML_Error_Exception('OAuth2 module: Only DBAL Store is supported');
