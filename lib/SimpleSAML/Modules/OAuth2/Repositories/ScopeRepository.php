@@ -27,7 +27,7 @@ class ScopeRepository implements ScopeRepositoryInterface
         $scopes = $oauth2config->getArray('scopes');
 
         if (array_key_exists($identifier, $scopes) === false) {
-            return;
+            return null;
         }
 
         $scope = new ScopeEntity();

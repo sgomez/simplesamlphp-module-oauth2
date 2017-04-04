@@ -26,11 +26,11 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
         $entity = $this->find($clientIdentifier);
 
         if (!$entity) {
-            return;
+            return null;
         }
 
         if ($clientSecret && $clientSecret !== $entity['secret']) {
-            return;
+            return null;
         }
 
         $client = new ClientEntity();

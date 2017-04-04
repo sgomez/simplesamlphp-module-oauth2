@@ -24,7 +24,7 @@ function oauth2_hook_cron(&$croninfo) {
 
     try {
 
-        $store = \SimpleSAML\Store::getInstance();
+        $store = \SimpleSAML_Store::getInstance();
 
         if (! $store instanceof \SimpleSAML\Modules\DBAL\Store\DBAL ) {
             throw new \SimpleSAML_Error_Exception('OAuth2 module: Only DBAL Store is supported');
@@ -43,7 +43,7 @@ function oauth2_hook_cron(&$croninfo) {
 
     } catch (Exception $e) {
         $message = 'OAuth2 clean up cron script failed: ' . $e->getMessage();
-        SimpleSAML\Logger::warning($message);
+        \SimpleSAML_Logger::warning($message);
         $croninfo['summary'][] = $message;
     }
 }

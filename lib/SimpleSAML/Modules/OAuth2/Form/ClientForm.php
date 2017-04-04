@@ -12,7 +12,6 @@ namespace SimpleSAML\Modules\OAuth2\Form;
 
 
 use Nette\Forms\Form;
-use SimpleSAML\Module;
 
 class ClientForm extends Form
 {
@@ -39,7 +38,7 @@ class ClientForm extends Form
 
         $this->addSubmit('submit', 'Submit');
         $this->addButton('return', 'Return')
-            ->setAttribute('onClick', 'parent.location = \''. Module::getModuleURL('oauth2/registry.php') .'\'')
+            ->setAttribute('onClick', 'parent.location = \''. \SimpleSAML_Module::getModuleURL('oauth2/registry.php') .'\'')
         ;
     }
 
