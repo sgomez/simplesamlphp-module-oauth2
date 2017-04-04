@@ -47,6 +47,6 @@ if ($form->isSubmitted() && $form->isSuccess()) {
     HTTP::redirectTrustedURL('registry.php');
 }
 
-$template = new \SimpleSAML_XHTML_Template($config, 'oauth2:registry_edit');
+$template = new \SimpleSAML_XHTML_Template($config, 'oauth2:registry_edit.php');
 $template->data['form'] = $form;
 $template->show();

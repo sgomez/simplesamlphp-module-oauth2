@@ -34,6 +34,6 @@ if (isset($_REQUEST['restore'])) {
 
 $clients = $clientRepository->findAll();
 
-$template = new \SimpleSAML_XHTML_Template($config, 'oauth2:registry_list');
+$template = new \SimpleSAML_XHTML_Template($config, 'oauth2:registry_list.php');
 $template->data['clients'] = $clients;
 $template->show();
