@@ -8,7 +8,9 @@ installable through [Composer](https://getcomposer.org/). Installation can be as
 easy as executing:
 
 ```
-composer.phar require sgomez/simplesamlphp-module-oauth2 ~2.0
+composer.phar require sgomez/simplesamlphp-module-oauth2 1.0.0 # for SSP < 1.14
+composer.phar require sgomez/simplesamlphp-module-oauth2 ~1.0 # for SSP >= 1.14
+composer.phar require sgomez/simplesamlphp-module-oauth2 ~2.0 # for SSP >= 2.0|master
 ```
 
 ## Configuration
