@@ -10,7 +10,6 @@
 
 namespace SimpleSAML\Modules\OAuth2;
 
-
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Grant\AuthCodeGrant;

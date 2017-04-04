@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-
 use SimpleSAML\Modules\OAuth2\OAuth2ResourceServer;
 use SimpleSAML\Modules\OAuth2\Repositories\AccessTokenRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\UserRepository;
@@ -37,8 +36,8 @@ try {
     $emiter = new SapiEmitter();
     $emiter->emit($response);
 } catch (Exception $e) {
-    header('Content-type: text/plain; utf-8', TRUE, 500);
-    header('OAuth-Error: ' . $e->getMessage());
+    header('Content-type: text/plain; utf-8', true, 500);
+    header('OAuth-Error: '.$e->getMessage());
 
     print_r($e);
 }

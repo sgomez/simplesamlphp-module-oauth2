@@ -10,7 +10,6 @@
 
 namespace SimpleSAML\Modules\OAuth2\Repositories;
 
-
 use Doctrine\DBAL\Connection;
 use SimpleSAML\Modules\DBAL\Store\DBAL;
 
@@ -36,10 +35,10 @@ abstract class AbstractDBALRepository
      */
     public function __construct()
     {
-        $this->config = \SimpleSAML_Configuration::getOptionalConfig( 'module_oauth2.php' );
+        $this->config = \SimpleSAML_Configuration::getOptionalConfig('module_oauth2.php');
         $this->store = \SimpleSAML_Store::getInstance();
 
-        if (! $this->store instanceof DBAL) {
+        if (!$this->store instanceof DBAL) {
             throw new \SimpleSAML_Error_Exception('OAuth2 module: Only DBAL Store is supported');
         }
 

@@ -32,7 +32,7 @@ $config = [
             'icon' => 'user',
             'description' => [
                 'en' => 'Your username.',
-                'es' => 'Su nombre de usuario.'
+                'es' => 'Su nombre de usuario.',
             ],
             'attributes' => ['uid'],
         ],

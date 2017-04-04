@@ -23,9 +23,10 @@ $config = \SimpleSAML_Configuration::getInstance();
 $clientRepository = new ClientRepository();
 $client = $clientRepository->find($client_id);
 if (!$client) {
-    header('Content-type: text/plain; utf-8', TRUE, 500);
+    header('Content-type: text/plain; utf-8', true, 500);
 
-    print('Client not found');
+    echo 'Client not found';
+
     return;
 }
 
@@ -43,9 +44,9 @@ if ($form->isSubmitted() && $form->isSuccess()) {
         $client['redirect_uri']
     );
 
-    HTTP::redirectTrustedURL( 'registry.php' );
+    HTTP::redirectTrustedURL('registry.php');
 }
 
-$template = new \SimpleSAML_XHTML_Template( $config, 'oauth2:registry_edit' );
+$template = new \SimpleSAML_XHTML_Template($config, 'oauth2:registry_edit');
 $template->data['form'] = $form;
 $template->show();

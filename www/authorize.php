@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-
 use SimpleSAML\Modules\OAuth2\Entity\UserEntity;
 use SimpleSAML\Modules\OAuth2\OAuth2AuthorizationServer;
 use SimpleSAML\Modules\OAuth2\Repositories\UserRepository;
@@ -16,7 +15,7 @@ use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 
 try {
-    $oauth2config = \SimpleSAML_Configuration::getOptionalConfig( 'module_oauth2.php' );
+    $oauth2config = \SimpleSAML_Configuration::getOptionalConfig('module_oauth2.php');
     $useridattr = $oauth2config->getString('useridattr');
 
     $as = $oauth2config->getString('auth');
@@ -25,7 +24,7 @@ try {
 
     $attributes = $auth->getAttributes();
     if (!isset($attributes[$useridattr])) {
-        throw new \Exception('Oauth2 useridattr doesn\'t exists. Available attributes are: '.implode(", ", $attributes));
+        throw new \Exception('Oauth2 useridattr doesn\'t exists. Available attributes are: '.implode(', ', $attributes));
     }
     $userid = $attributes[$useridattr][0];
 
@@ -45,8 +44,8 @@ try {
     $emiter = new Response\SapiEmitter();
     $emiter->emit($response);
 } catch (Exception $e) {
-    header('Content-type: text/plain; utf-8', TRUE, 500);
-    header('OAuth-Error: ' . $e->getMessage());
+    header('Content-type: text/plain; utf-8', true, 500);
+    header('OAuth-Error: '.$e->getMessage());
 
     print_r($e);
 }

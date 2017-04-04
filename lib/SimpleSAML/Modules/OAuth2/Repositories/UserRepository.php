@@ -8,9 +8,7 @@
  * file that was distributed with this source code.
  */
 
-
 namespace SimpleSAML\Modules\OAuth2\Repositories;
-
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
@@ -22,8 +20,7 @@ class UserRepository extends AbstractDBALRepository implements UserRepositoryInt
         $password,
         $grantType,
         ClientEntityInterface $clientEntity
-    )
-    {
+    ) {
         throw new \Exception('Not supported');
     }
 
@@ -80,7 +77,7 @@ class UserRepository extends AbstractDBALRepository implements UserRepositoryInt
     public function getAttributes($userId)
     {
         $attributes = $this->conn->fetchColumn(
-            'SELECT attributes FROM ' . $this->getTableName() . ' WHERE id = ?',
+            'SELECT attributes FROM '.$this->getTableName().' WHERE id = ?',
             [$userId]
         );
 

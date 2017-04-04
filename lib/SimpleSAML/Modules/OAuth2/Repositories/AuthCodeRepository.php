@@ -10,7 +10,6 @@
 
 namespace SimpleSAML\Modules\OAuth2\Repositories;
 
-
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use SimpleSAML\Modules\OAuth2\Entity\AuthCodeEntity;
@@ -18,7 +17,7 @@ use SimpleSAML\Modules\OAuth2\Entity\AuthCodeEntity;
 class AuthCodeRepository extends AbstractDBALRepository implements AuthCodeRepositoryInterface
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getNewAuthCode()
     {
@@ -26,7 +25,7 @@ class AuthCodeRepository extends AbstractDBALRepository implements AuthCodeRepos
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
@@ -53,7 +52,7 @@ class AuthCodeRepository extends AbstractDBALRepository implements AuthCodeRepos
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function revokeAuthCode($codeId)
     {
@@ -61,7 +60,7 @@ class AuthCodeRepository extends AbstractDBALRepository implements AuthCodeRepos
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function isAuthCodeRevoked($codeId)
     {
