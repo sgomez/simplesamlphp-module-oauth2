@@ -14,6 +14,7 @@ use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
+use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use SimpleSAML\Modules\OAuth2\Repositories\AccessTokenRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\AuthCodeRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\ClientRepository;
@@ -50,9 +51,11 @@ class OAuth2AuthorizationServer
             $publicKey
         );
 
+        $refreshTokenRepository = new RefreshTokenRepository();
+
         $authCodeGrant = new AuthCodeGrant(
             new AuthCodeRepository(),
-            new RefreshTokenRepository(),
+            $refreshTokenRepository,
             new \DateInterval($authCodeDuration)
         );
         $authCodeGrant->setRefreshTokenTTL(new \DateInterval($refreshTokenDuration)); // refresh tokens will expire after 1 month
@@ -67,6 +70,14 @@ class OAuth2AuthorizationServer
         self::$instance->enableGrantType(
             $implicitGrant,
             new \DateInterval($accessTokenDuration)
+        );
+
+        $refreshTokenGrant = new RefreshTokenGrant($refreshTokenRepository);
+        $refreshTokenGrant->setRefreshTokenTTL(new \DateInterval($refreshTokenDuration));
+
+        self::$instance->enableGrantType(
+            $refreshTokenGrant,
+            new \DateInterval($authCodeDuration)
         );
 
         return self::$instance;
