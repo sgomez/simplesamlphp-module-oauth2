@@ -37,11 +37,12 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
         $client->setName($entity['name']);
         $client->setRedirectUri($entity['redirect_uri']);
         $client->setSecret($entity['secret']);
+        $client->setAuthSource($entity['auth_source']);
 
         return $client;
     }
 
-    public function persistNewClient($id, $secret, $name, $description, $redirectUri)
+    public function persistNewClient($id, $secret, $name, $description, $authSource, $redirectUri)
     {
         if (false === is_array($redirectUri)) {
             if (is_string($redirectUri)) {
@@ -56,9 +57,11 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
             'secret' => $secret,
             'name' => $name,
             'description' => $description,
+            'auth_source' => $authSource,
             'redirect_uri' => $redirectUri,
             'scopes' => ['basic'],
         ], [
+            'string',
             'string',
             'string',
             'string',
@@ -68,16 +71,18 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
         ]);
     }
 
-    public function updateClient($id, $name, $description, $redirectUri)
+    public function updateClient($id, $name, $description, $authSource, $redirectUri)
     {
         $this->conn->update($this->getTableName(), [
             'name' => $name,
             'description' => $description,
+            'auth_source' => $authSource,
             'redirect_uri' => $redirectUri,
             'scopes' => ['basic'],
         ], [
             'id' => $id,
         ], [
+            'string',
             'string',
             'string',
             'json_array',
@@ -93,6 +98,10 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
         ]);
     }
 
+    /**
+     * @param $clientIdentifier
+     * @return array
+     */
     public function find($clientIdentifier)
     {
         $client = $this->conn->fetchAssoc(
@@ -112,6 +121,9 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
         return $client;
     }
 
+    /**
+     * @return ClientEntity[]
+     */
     public function findAll()
     {
         $clients = $this->conn->fetchAll(

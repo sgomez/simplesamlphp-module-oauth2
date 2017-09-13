@@ -1,6 +1,12 @@
 SimpleSAMLphp OAuth2 module
 ====================================
 
+## What is new?
+
+From versions 1.2.x and 2.2.x this modules supports diferents AuthSources by
+client, instead one for all. If you come from versions <1.2 and <2.2 you must
+update the schema. Please, see the _"Create or update the schema"_ section.
+
 ## Installation
 
 This package add support for the OAuth2 protocol through a SimpleSAMLphp module
@@ -18,7 +24,7 @@ composer.phar require sgomez/simplesamlphp-module-oauth2 ~2.0 # for SSP >= 2.0|m
 This module requires [sgomez/simplesamlphp-module-dbal](https://github.com/sgomez/simplesamlphp-module-dbal)
 module configured. It's installed as a dependency but you need to read the module info and configure it.
  
-### Create the schema
+### Create or update the schema
  
 You need to run this to create the schema using the DBAL store module:
  

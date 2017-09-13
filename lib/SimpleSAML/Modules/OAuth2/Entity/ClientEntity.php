@@ -17,14 +17,28 @@ class ClientEntity implements ClientEntityInterface
 {
     use EntityTrait;
 
+    /**
+     * @var string
+     */
     private $name;
 
+    /**
+     * @var string
+     */
     private $secret;
 
+    /**
+     * @var string
+     */
     private $redirectUri;
 
     /**
-     * @return mixed
+     * @var string
+     */
+    private $authSource;
+
+    /**
+     * @return string
      */
     public function getName()
     {
@@ -32,7 +46,7 @@ class ClientEntity implements ClientEntityInterface
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -40,7 +54,7 @@ class ClientEntity implements ClientEntityInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSecret()
     {
@@ -48,7 +62,7 @@ class ClientEntity implements ClientEntityInterface
     }
 
     /**
-     * @param mixed $secret
+     * @param string $secret
      */
     public function setSecret($secret)
     {
@@ -56,7 +70,7 @@ class ClientEntity implements ClientEntityInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getRedirectUri()
     {
@@ -64,10 +78,26 @@ class ClientEntity implements ClientEntityInterface
     }
 
     /**
-     * @param mixed $redirectUri
+     * @param string $redirectUri
      */
     public function setRedirectUri($redirectUri)
     {
         $this->redirectUri = $redirectUri;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthSource()
+    {
+        return $this->authSource;
+    }
+
+    /**
+     * @param string $authSource
+     */
+    public function setAuthSource($authSource)
+    {
+        $this->authSource = $authSource;
     }
 }

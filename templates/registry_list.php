@@ -25,6 +25,10 @@ if (!empty($this->data['clients'])) {
                 <td class="data">{$client['description']}</td>
             </tr>
             <tr>
+                <th class="desc">Auth Source</td>
+                <td class="data">{$client['auth_source']}</td>
+            </tr>
+            <tr>
                 <th class="desc">Client ID</td>
                 <td class="data">{$client['id']}</td>
             </tr>
