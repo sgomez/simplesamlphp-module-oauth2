@@ -10,7 +10,6 @@
 
 namespace SimpleSAML\Modules\OAuth2\Repositories;
 
-
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
@@ -19,7 +18,7 @@ use SimpleSAML\Modules\OAuth2\Entity\AccessTokenEntity;
 class AccessTokenRepository extends AbstractDBALRepository implements AccessTokenRepositoryInterface
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
@@ -33,7 +32,7 @@ class AccessTokenRepository extends AbstractDBALRepository implements AccessToke
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
@@ -49,7 +48,7 @@ class AccessTokenRepository extends AbstractDBALRepository implements AccessToke
                 'scopes' => $scopes,
                 'expires_at' => $accessTokenEntity->getExpiryDateTime(),
                 'user_id' => $accessTokenEntity->getUserIdentifier(),
-                'client_id' => $accessTokenEntity->getClient()->getIdentifier()
+                'client_id' => $accessTokenEntity->getClient()->getIdentifier(),
             ], [
                 'string',
                 'json_array',
@@ -63,7 +62,7 @@ class AccessTokenRepository extends AbstractDBALRepository implements AccessToke
     public function getUserId($tokenId)
     {
         $userId = $this->conn->fetchColumn(
-            'SELECT user_id FROM ' . $this->getTableName() . ' WHERE id = ?',
+            'SELECT user_id FROM '.$this->getTableName().' WHERE id = ?',
             [$tokenId]
         );
 
@@ -71,7 +70,7 @@ class AccessTokenRepository extends AbstractDBALRepository implements AccessToke
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function revokeAccessToken($tokenId)
     {
@@ -79,7 +78,7 @@ class AccessTokenRepository extends AbstractDBALRepository implements AccessToke
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function isAccessTokenRevoked($tokenId)
     {

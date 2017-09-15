@@ -12,21 +12,25 @@ use SimpleSAML\Modules\OAuth2\Repositories\AccessTokenRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\AuthCodeRepository;
 use SimpleSAML\Modules\OAuth2\Repositories\RefreshTokenRepository;
 
-function oauth2_hook_cron(&$croninfo) {
+function oauth2_hook_cron(&$croninfo)
+{
     assert('is_array($croninfo)');
     assert('array_key_exists("summary", $croninfo)');
     assert('array_key_exists("tag", $croninfo)');
 
     $oauth2config = SimpleSAML_Configuration::getOptionalConfig('module_oauth2.php');
 
-    if (is_null($oauth2config->getValue('cron_tag', 'hourly'))) return;
-    if ($oauth2config->getValue('cron_tag', NULL) !== $croninfo['tag']) return;
+    if (is_null($oauth2config->getValue('cron_tag', 'hourly'))) {
+        return;
+    }
+    if ($oauth2config->getValue('cron_tag', null) !== $croninfo['tag']) {
+        return;
+    }
 
     try {
-
         $store = \SimpleSAML\Store::getInstance();
 
-        if (! $store instanceof \SimpleSAML\Modules\DBAL\Store\DBAL ) {
+        if (!$store instanceof \SimpleSAML\Modules\DBAL\Store\DBAL) {
             throw new \SimpleSAML_Error_Exception('OAuth2 module: Only DBAL Store is supported');
         }
 
@@ -40,9 +44,8 @@ function oauth2_hook_cron(&$croninfo) {
         $refreshTokenRepository->removeExpiredRefreshTokens();
 
         $croninfo['summary'][] = 'OAuth2 clean up. Removed expired entries from OAuth2 storage.';
-
     } catch (Exception $e) {
-        $message = 'OAuth2 clean up cron script failed: ' . $e->getMessage();
+        $message = 'OAuth2 clean up cron script failed: '.$e->getMessage();
         SimpleSAML\Logger::warning($message);
         $croninfo['summary'][] = $message;
     }

@@ -10,14 +10,13 @@
 
 namespace SimpleSAML\Modules\OAuth2\Form;
 
-
 use Nette\Forms\Form;
 use SimpleSAML\Module;
 
 class ClientForm extends Form
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function __construct($name)
     {
@@ -44,7 +43,7 @@ class ClientForm extends Form
 
         $this->addSubmit('submit', 'Submit');
         $this->addButton('return', 'Return')
-            ->setAttribute('onClick', 'parent.location = \''. Module::getModuleURL('oauth2/registry.php') .'\'')
+            ->setAttribute('onClick', 'parent.location = \''.Module::getModuleURL('oauth2/registry.php').'\'')
         ;
     }
 
@@ -60,7 +59,7 @@ class ClientForm extends Form
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getValues($asArray = false)
     {
@@ -68,7 +67,7 @@ class ClientForm extends Form
 
         // Sanitize Redirect URIs
         $redirect_uris = preg_split("/[\t\r\n]+/", $values['redirect_uri']);
-        $redirect_uris = array_filter($redirect_uris, function($redirect_uri) {
+        $redirect_uris = array_filter($redirect_uris, function ($redirect_uri) {
             return !empty(trim($redirect_uri));
         });
         $values['redirect_uri'] = $redirect_uris;
@@ -77,7 +76,7 @@ class ClientForm extends Form
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function setDefaults($values, $erase = false)
     {

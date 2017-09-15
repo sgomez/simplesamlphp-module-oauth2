@@ -10,7 +10,6 @@
 
 namespace SimpleSAML\Modules\OAuth2\Repositories;
 
-
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use SimpleSAML\Modules\OAuth2\Entity\RefreshTokenEntity;
@@ -18,7 +17,7 @@ use SimpleSAML\Modules\OAuth2\Entity\RefreshTokenEntity;
 class RefreshTokenRepository extends AbstractDBALRepository implements RefreshTokenRepositoryInterface
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getNewRefreshToken()
     {
@@ -26,7 +25,7 @@ class RefreshTokenRepository extends AbstractDBALRepository implements RefreshTo
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
     {
@@ -42,7 +41,7 @@ class RefreshTokenRepository extends AbstractDBALRepository implements RefreshTo
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function revokeRefreshToken($tokenId)
     {
@@ -50,7 +49,7 @@ class RefreshTokenRepository extends AbstractDBALRepository implements RefreshTo
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function isRefreshTokenRevoked($tokenId)
     {

@@ -10,7 +10,6 @@
 
 namespace SimpleSAML\Modules\OAuth2\Entity;
 
-
 use League\OAuth2\Server\Entities\UserEntityInterface;
 
 class UserEntity implements UserEntityInterface
@@ -36,7 +35,7 @@ class UserEntity implements UserEntityInterface
     private $updatedAt;
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function __construct($identifier)
     {
