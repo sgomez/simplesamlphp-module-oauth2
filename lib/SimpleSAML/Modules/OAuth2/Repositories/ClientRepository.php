@@ -100,6 +100,7 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
 
     /**
      * @param $clientIdentifier
+     *
      * @return array
      */
     public function find($clientIdentifier)
