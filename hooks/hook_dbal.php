@@ -24,6 +24,7 @@ function oauth2_hook_dbal(&$dbinfo)
     $client->addColumn('secret', 'string', [ 'length' => 255 ]);
     $client->addColumn('name', 'string', [ 'length' => 255 ]);
     $client->addColumn('description', 'text', [ 'notnull' => false ]);
+    $client->addColumn('auth_source', 'string', ['length' => 255, 'notnull' => false]);
     $client->addColumn('redirect_uri', 'json_array');
     $client->addColumn('scopes', 'json_array');
     $client->setPrimaryKey(['id']);

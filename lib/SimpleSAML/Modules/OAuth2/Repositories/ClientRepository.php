@@ -10,7 +10,6 @@
 
 namespace SimpleSAML\Modules\OAuth2\Repositories;
 
-
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use SimpleSAML\Modules\OAuth2\Entity\ClientEntity;
 use SimpleSAML\Utils\Random;
@@ -18,7 +17,7 @@ use SimpleSAML\Utils\Random;
 class ClientRepository extends AbstractDBALRepository implements ClientRepositoryInterface
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
     {
@@ -26,11 +25,11 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
         $entity = $this->find($clientIdentifier);
 
         if (!$entity) {
-            return;
+            return null;
         }
 
         if ($clientSecret && $clientSecret !== $entity['secret']) {
-            return;
+            return null;
         }
 
         $client = new ClientEntity();
@@ -38,11 +37,12 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
         $client->setName($entity['name']);
         $client->setRedirectUri($entity['redirect_uri']);
         $client->setSecret($entity['secret']);
+        $client->setAuthSource($entity['auth_source']);
 
         return $client;
     }
 
-    public function persistNewClient($id, $secret, $name, $description, $redirectUri)
+    public function persistNewClient($id, $secret, $name, $description, $authSource, $redirectUri)
     {
         if (false === is_array($redirectUri)) {
             if (is_string($redirectUri)) {
@@ -57,6 +57,7 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
             'secret' => $secret,
             'name' => $name,
             'description' => $description,
+            'auth_source' => $authSource,
             'redirect_uri' => $redirectUri,
             'scopes' => ['basic'],
         ], [
@@ -64,16 +65,18 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
             'string',
             'string',
             'string',
+            'string',
             'json_array',
-            'json_array'
+            'json_array',
         ]);
     }
 
-    public function updateClient($id, $name, $description, $redirectUri)
+    public function updateClient($id, $name, $description, $authSource, $redirectUri)
     {
         $this->conn->update($this->getTableName(), [
             'name' => $name,
             'description' => $description,
+            'auth_source' => $authSource,
             'redirect_uri' => $redirectUri,
             'scopes' => ['basic'],
         ], [
@@ -81,8 +84,9 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
         ], [
             'string',
             'string',
+            'string',
             'json_array',
-            'json_array'
+            'json_array',
         ]);
     }
 
@@ -90,29 +94,36 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
     {
         $conn = $this->store->getConnection();
         $conn->delete($this->getTableName(), [
-            'id' => $clientIdentifier
+            'id' => $clientIdentifier,
         ]);
     }
 
+    /**
+     * @param $clientIdentifier
+     * @return array
+     */
     public function find($clientIdentifier)
     {
         $client = $this->conn->fetchAssoc(
             'SELECT * FROM '.$this->getTableName().' WHERE id = ?',
             [
-                $clientIdentifier
+                $clientIdentifier,
             ], [
-                'string'
+                'string',
             ]
         );
 
         if ($client) {
-            $client['redirect_uri'] = $this->conn->convertToPHPValue($client['redirect_uri'], 'json_array' );
-            $client['scopes'] = $this->conn->convertToPHPValue($client['scopes'], 'json_array' );
+            $client['redirect_uri'] = $this->conn->convertToPHPValue($client['redirect_uri'], 'json_array');
+            $client['scopes'] = $this->conn->convertToPHPValue($client['scopes'], 'json_array');
         }
 
         return $client;
     }
 
+    /**
+     * @return ClientEntity[]
+     */
     public function findAll()
     {
         $clients = $this->conn->fetchAll(
@@ -120,8 +131,8 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
         );
 
         foreach ($clients as &$client) {
-            $client['redirect_uri'] = $this->conn->convertToPHPValue($client['redirect_uri'], 'json_array' );
-            $client['scopes'] = $this->conn->convertToPHPValue($client['scopes'], 'json_array' );
+            $client['redirect_uri'] = $this->conn->convertToPHPValue($client['redirect_uri'], 'json_array');
+            $client['scopes'] = $this->conn->convertToPHPValue($client['scopes'], 'json_array');
         }
 
         return $clients;
@@ -140,7 +151,7 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
         ], [
             'id' => $clientIdentifier,
         ], [
-            'string'
+            'string',
         ]);
     }
 }
