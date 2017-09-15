@@ -41,7 +41,7 @@ if ($form->isSubmitted() && $form->isSuccess()) {
         $client_id,
         $client['name'],
         $client['description'],
-        $client['authSource'],
+        $client['auth_source'],
         $client['redirect_uri']
     );
 
