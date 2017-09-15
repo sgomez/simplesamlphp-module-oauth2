@@ -24,7 +24,7 @@ class ClientForm extends Form
         $this->onValidate[] = [$this, 'validateRedirectUri'];
 
         $this->setMethod('POST');
-//        $this->addProtection('Security token has expired, please submit the form again');
+        $this->addProtection('Security token has expired, please submit the form again');
 
         $this->addText('name', 'Name of client:')
             ->setMaxLength(255)
@@ -34,7 +34,7 @@ class ClientForm extends Form
         $this->addTextArea('redirect_uri', 'Static/enforcing callback-url (one per line)', null, 5)
             ->setRequired('Write one redirect URI at least')
         ;
-        $this->addSelect('authSource', 'Authorization source:')
+        $this->addSelect('auth_source', 'Authorization source:')
             ->setItems(\SimpleSAML_Auth_Source::getSources(), false)
             ->setPrompt('Pick an AuthSource or blank for default')
             ->setRequired(false)
