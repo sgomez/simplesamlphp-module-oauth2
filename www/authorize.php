@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use League\OAuth2\Server\Exception\OAuthServerException;
 use SimpleSAML\Modules\OAuth2\Entity\UserEntity;
 use SimpleSAML\Modules\OAuth2\OAuth2AuthorizationServer;
 use SimpleSAML\Modules\OAuth2\Repositories\ClientRepository;
@@ -56,9 +57,8 @@ try {
 
     $emiter = new Response\SapiEmitter();
     $emiter->emit($response);
+} catch (OAuthServerException $e) {
+    throw new \SimpleSAML_Error_Exception($e->getHint());
 } catch (Exception $e) {
-    header('Content-type: text/plain; utf-8', true, 500);
-    header('OAuth-Error: '.$e->getMessage());
-
-    print_r($e);
+    throw new \SimpleSAML_Error_Exception($e->getMessage());
 }
