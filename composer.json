@@ -21,7 +21,8 @@
         "league/oauth2-server"                      : "~6.0",
         "nette/forms"                               : "~2.4",
         "sgomez/simplesamlphp-module-dbal"          : "~1.0",
-        "zendframework/zend-diactoros"              : "~1.3"
+        "zendframework/zend-diactoros"              : "~1.3",
+        "spomky-labs/jose": "^7.0"
     },
     "require-dev": {
         "simplesamlphp/simplesamlphp"               : "^1.14"
