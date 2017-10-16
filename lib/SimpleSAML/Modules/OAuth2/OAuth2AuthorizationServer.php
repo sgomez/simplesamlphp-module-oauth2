@@ -37,6 +37,7 @@ class OAuth2AuthorizationServer
         $authCodeDuration = $oauth2config->getString('authCodeDuration');
         $passPhrase = $oauth2config->getString('pass_phrase', null);
         $refreshTokenDuration = $oauth2config->getString('refreshTokenDuration');
+        $enablePKCE = $oauth2config->getBoolean('pkce', false);
 
         $privateKeyPath = Config::getCertPath('oauth2_module.pem');
         $privateKey = new CryptKey($privateKeyPath, $passPhrase);
@@ -58,6 +59,9 @@ class OAuth2AuthorizationServer
             new \DateInterval($authCodeDuration)
         );
         $authCodeGrant->setRefreshTokenTTL(new \DateInterval($refreshTokenDuration)); // refresh tokens will expire after 1 month
+        if ($enablePKCE) {
+            $authCodeGrant->enableCodeExchangeProof();
+        }
 
         self::$instance->enableGrantType(
             $authCodeGrant,

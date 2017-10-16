@@ -16,6 +16,8 @@ $config = [
     'authCodeDuration' => 'PT10M', // 10 minutes
     'refreshTokenDuration' => 'P1M', // 1 month
     'accessTokenDuration' => 'PT1H', // 1 hour,
+    // Enable PKCE (RFC7636)
+    'pkce' => false,
 
     // Tag to run storage cleanup script using the cron module...
     'cron_tag' => 'hourly',
