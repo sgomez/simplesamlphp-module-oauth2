@@ -10,9 +10,12 @@ if (!empty($this->data['clients'])) {
     $clients = [];
 
     foreach ($this->data['clients'] as $client) {
-        $urls = array_reduce($client['redirect_uri'], function($initial, $item) {
-            return sprintf('%s <li>%s</li>', $initial, $item);
-        }, '');
+
+        $makeList = function ($initial, $item) {
+            return  "{$initial} <li>{$item}</li>";
+        };
+        $urls = array_reduce($client['redirect_uri'], $makeList, '');
+        $scopes = array_reduce($client['scopes'], $makeList, '');
 
         $clients[] = <<< EOD
         <table class="metalist">
@@ -43,6 +46,10 @@ if (!empty($this->data['clients'])) {
                         {$urls}
                     </ul>
                 </td>
+            </tr>
+            <tr>
+            <th class="desc">Scopes</th>
+            <td class="data">{$scopes}</td>
             </tr>
             <tr>
                 <td colspan="2">

@@ -18,8 +18,12 @@ table tr td.header {
 	font-size: 110%;
 }
 
+table tr td input[type="checkbox"] {
+	width: auto;
+}
+
 table tr td input,table tr td textarea {
-	width: 90%;
+	width: 100%;
 	border: 1px solid #bbb;
 	margin: 2px 5px;
 	padding: 2px 4px;

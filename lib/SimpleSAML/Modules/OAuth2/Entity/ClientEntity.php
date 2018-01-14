@@ -38,19 +38,42 @@ class ClientEntity implements ClientEntityInterface
     private $authSource;
 
     /**
+     * @var array
+     */
+    private $scopes;
+
+    /**
+     * ClientEntity constructor.
+     * @param string $name
+     * @param string $secret
+     * @param string $redirectUri
+     * @param string $authSource
+     * @param array $scopes
+     */
+    public function __construct($identifier, $name, $secret, $redirectUri, $authSource, array $scopes)
+    {
+        $this->identifier = $identifier;
+        $this->name = $name;
+        $this->secret = $secret;
+        $this->redirectUri = $redirectUri;
+        $this->authSource = $authSource;
+        $this->scopes = $scopes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
      * @return string
      */
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
     }
 
     /**
@@ -62,27 +85,11 @@ class ClientEntity implements ClientEntityInterface
     }
 
     /**
-     * @param string $secret
-     */
-    public function setSecret($secret)
-    {
-        $this->secret = $secret;
-    }
-
-    /**
      * @return string
      */
     public function getRedirectUri()
     {
         return $this->redirectUri;
-    }
-
-    /**
-     * @param string $redirectUri
-     */
-    public function setRedirectUri($redirectUri)
-    {
-        $this->redirectUri = $redirectUri;
     }
 
     /**
@@ -94,10 +101,10 @@ class ClientEntity implements ClientEntityInterface
     }
 
     /**
-     * @param string $authSource
+     * @return array
      */
-    public function setAuthSource($authSource)
+    public function getScopes()
     {
-        $this->authSource = $authSource;
+        return $this->scopes;
     }
 }

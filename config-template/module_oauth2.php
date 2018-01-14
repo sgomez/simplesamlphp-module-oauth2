@@ -28,15 +28,25 @@ $config = [
     'useridattr' => 'uid',
 
     // You can create as many scopes as you want and assign attributes to them
-    // WIP: Actually only basic scope is supported with all the attributes
     'scopes' => [
         'basic' => [
-            'icon' => 'user',
-            'description' => [
-                'en' => 'Your username.',
-                'es' => 'Su nombre de usuario.',
-            ],
-            'attributes' => ['uid'],
+            'description' => 'basic scope',
         ],
+        'openid' => [
+            'description' => 'openId scope',
+        ],
+        'profile' => [
+            'description' => 'profile claims',
+            'attributes' => ['name', 'family_name', 'given_name', '']
+        ],
+        'email' => [
+            'description' => 'email and email_verified claims',
+        ],
+        'address' => [
+            'description' => 'address claim',
+        ],
+        'phone' => [
+            'description' => 'phone_number and phone_number_verified claims',
+        ]
     ],
 ];

@@ -32,17 +32,19 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
             return null;
         }
 
-        $client = new ClientEntity();
-        $client->setIdentifier($clientIdentifier);
-        $client->setName($entity['name']);
-        $client->setRedirectUri($entity['redirect_uri']);
-        $client->setSecret($entity['secret']);
-        $client->setAuthSource($entity['auth_source']);
+        $client = new ClientEntity(
+            $clientIdentifier,
+            $entity['name'],
+            $entity['secret'],
+            $entity['redirect_uri'],
+            $entity['auth_source'],
+            $entity['scopes']
+        );
 
         return $client;
     }
 
-    public function persistNewClient($id, $secret, $name, $description, $authSource, $redirectUri)
+    public function persistNewClient($id, $secret, $name, $description, $authSource, $redirectUri, $scopes)
     {
         if (false === is_array($redirectUri)) {
             if (is_string($redirectUri)) {
@@ -59,7 +61,7 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
             'description' => $description,
             'auth_source' => $authSource,
             'redirect_uri' => $redirectUri,
-            'scopes' => ['basic'],
+            'scopes' => $scopes,
         ], [
             'string',
             'string',
@@ -71,14 +73,14 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
         ]);
     }
 
-    public function updateClient($id, $name, $description, $authSource, $redirectUri)
+    public function updateClient($id, $name, $description, $authSource, $redirectUri, $scopes)
     {
         $this->conn->update($this->getTableName(), [
             'name' => $name,
             'description' => $description,
             'auth_source' => $authSource,
             'redirect_uri' => $redirectUri,
-            'scopes' => ['basic'],
+            'scopes' => $scopes,
         ], [
             'id' => $id,
         ], [

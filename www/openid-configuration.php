@@ -18,6 +18,7 @@ try {
     $oauth2config = \SimpleSAML_Configuration::getOptionalConfig('module_oauth2.php');
     $request = ServerRequestFactory::fromGlobals();
 
+    $scopes = $oauth2config->getArray('scopes');
 
     $metadata = [
         'issuer' => \SimpleSAML\Utils\HTTP::getSelfURLHost() . '/',
@@ -25,10 +26,18 @@ try {
         'token_endpoint' => SimpleSAML_Module::getModuleURL('oauth2/access_token.php'),
         'userinfo_endpoint' => SimpleSAML_Module::getModuleURL('oauth2/userinfo.php'),
         'jwks_uri' => SimpleSAML_Module::getModuleURL('oauth2/userinfo.php'),
-        'scopes_supported' => null,
-        'response_types_supported' => null,
-        'subject_types_supported' => null,
-        'id_token_signing_alg_values_supported' => null,
+        'scopes_supported' => array_keys($scopes),
+        'response_types_supported' => [
+            'code',
+            'token',
+            'id_token token'
+        ],
+        'subject_types_supported' => [
+            'public',
+        ],
+        'id_token_signing_alg_values_supported' => [
+            'RS256'
+        ],
     ];
 
     $response = new JsonResponse($metadata);

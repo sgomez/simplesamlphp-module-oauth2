@@ -42,7 +42,8 @@ if ($form->isSubmitted() && $form->isSuccess()) {
         $client['name'],
         $client['description'],
         $client['auth_source'],
-        $client['redirect_uri']
+        $client['redirect_uri'],
+        $client['scopes']
     );
 
     HTTP::redirectTrustedURL('registry.php');

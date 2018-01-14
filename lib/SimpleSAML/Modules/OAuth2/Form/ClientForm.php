@@ -39,6 +39,8 @@ class ClientForm extends Form
             ->setPrompt('Pick an AuthSource or blank for default')
             ->setRequired(false)
         ;
+        $scopeCheckList = new ScopeCheckList('Scopes');
+        $this->addComponent($scopeCheckList, 'scopes');
 
         $this->addSubmit('submit', 'Submit');
         $this->addButton('return', 'Return')
