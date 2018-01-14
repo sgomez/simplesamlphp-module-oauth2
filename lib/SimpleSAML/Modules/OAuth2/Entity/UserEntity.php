@@ -107,4 +107,12 @@ class UserEntity implements UserEntityInterface
     {
         $this->updatedAt = $updatedAt;
     }
+
+    /**
+     * @return array
+     */
+    public function getClaims()
+    {
+        return $this->attributes;
+    }
 }

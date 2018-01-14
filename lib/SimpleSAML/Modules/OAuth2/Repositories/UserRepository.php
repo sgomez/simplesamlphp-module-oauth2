@@ -12,9 +12,14 @@ namespace SimpleSAML\Modules\OAuth2\Repositories;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
+use OpenIDConnectServer\Repositories\IdentityProviderInterface;
+use SimpleSAML\Modules\OAuth2\Entity\UserEntity;
 
-class UserRepository extends AbstractDBALRepository implements UserRepositoryInterface
+class UserRepository extends AbstractDBALRepository implements UserRepositoryInterface, IdentityProviderInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getUserEntityByUserCredentials(
         $username,
         $password,
@@ -24,6 +29,29 @@ class UserRepository extends AbstractDBALRepository implements UserRepositoryInt
         throw new \Exception('Not supported');
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserEntityByIdentifier($identifier)
+    {
+        $entity = $this->find($identifier);
+
+        if (!$entity) {
+            return null;
+        }
+
+        $user = new UserEntity($identifier);
+        $user->setAttributes($entity['attributes']);
+        $user->setCreatedAt($entity['created_at']);
+        $user->setUpdatedAt($entity['updated_at']);
+
+        return $user;
+    }
+
+    /**
+     * @param $id
+     * @param $attributes
+     */
     public function persistNewUser($id, $attributes)
     {
         $now = new \DateTime();
@@ -43,6 +71,11 @@ class UserRepository extends AbstractDBALRepository implements UserRepositoryInt
         );
     }
 
+    /**
+     * @param $id
+     * @param $attributes
+     * @return int
+     */
     public function updateUser($id, $attributes)
     {
         $now = new \DateTime();
@@ -60,6 +93,32 @@ class UserRepository extends AbstractDBALRepository implements UserRepositoryInt
         );
     }
 
+    /**
+     * @param $userIdentifier
+     *
+     * @return array|bool
+     */
+    public function find($userIdentifier)
+    {
+        $user = $this->conn->fetchAssoc(
+            "SELECT * FROM {$this->getTableName()} WHERE id = ?", [
+                $userIdentifier
+            ], [
+                'string'
+            ]
+        );
+        
+        if ($user) {
+            $user['attributes'] = $this->conn->convertToPHPValue($user['attributes'], 'json_array');
+        }
+
+        return $user;
+    }
+
+    /**
+     * @param $userIdentifier
+     * @throws \Doctrine\DBAL\Exception\InvalidArgumentException
+     */
     public function delete($userIdentifier)
     {
         $this->conn->delete($this->getTableName(), [
@@ -67,6 +126,10 @@ class UserRepository extends AbstractDBALRepository implements UserRepositoryInt
         ]);
     }
 
+    /**
+     * @param $userId
+     * @param $attributes
+     */
     public function insertOrCreate($userId, $attributes)
     {
         if (0 === $this->updateUser($userId, $attributes)) {
@@ -74,16 +137,23 @@ class UserRepository extends AbstractDBALRepository implements UserRepositoryInt
         }
     }
 
+    /**
+     * @param $userId
+     * @return mixed
+     */
     public function getAttributes($userId)
     {
         $attributes = $this->conn->fetchColumn(
-            'SELECT attributes FROM '.$this->getTableName().' WHERE id = ?',
+            "SELECT attributes FROM {$this->getTableName()} WHERE id = ?",
             [$userId]
         );
 
         return $this->conn->convertToPHPValue($attributes, 'json_array');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getTableName()
     {
         return $this->store->getPrefix().'_oauth2_user';
