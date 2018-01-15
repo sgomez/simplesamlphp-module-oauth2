@@ -25,7 +25,7 @@ try {
         'authorization_endpoint' => SimpleSAML_Module::getModuleURL('oauth2/authorize.php'),
         'token_endpoint' => SimpleSAML_Module::getModuleURL('oauth2/access_token.php'),
         'userinfo_endpoint' => SimpleSAML_Module::getModuleURL('oauth2/userinfo.php'),
-        'jwks_uri' => SimpleSAML_Module::getModuleURL('oauth2/userinfo.php'),
+        'jwks_uri' => SimpleSAML_Module::getModuleURL('oauth2/jwks.php'),
         'scopes_supported' => array_keys($scopes),
         'response_types_supported' => [
             'code',
