@@ -3,7 +3,7 @@
     "description": "A SimpleSAMLphp module adding support for the OAuth2 protocol.",
     "type": "simplesamlphp-module",
     "keywords": [ "oauth2" ],
-    "license": "LGPL-2.1",
+    "license": "MIT",
     "authors": [
         {
             "name": "Sergio Gómez",
