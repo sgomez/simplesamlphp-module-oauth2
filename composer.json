@@ -21,7 +21,7 @@
         "league/oauth2-server"                      : "~6.0",
         "nette/forms"                               : "~2.4",
         "sgomez/simplesamlphp-module-dbal"          : "~1.0",
-        "steverhoades/oauth2-openid-connect-server" : "dev-patch-1",
+        "steverhoades/oauth2-openid-connect-server" : "^0.2",
         "zendframework/zend-diactoros"              : "~1.3",
         "spomky-labs/jose": "^7.0"
     },
@@ -32,11 +32,5 @@
         "branch-alias": {
             "dev-master": "1.0.x-dev"
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/sgomez/oauth2-openid-connect-server.git"
-        }
-    ]
+    }
 }
