@@ -11,8 +11,13 @@
         }
     ],
     "autoload": {
-    "psr-0": {
-        "SimpleSAML\\Modules\\OAuth2\\": "lib"
+        "psr-0": {
+            "SimpleSAML\\Modules\\OAuth2\\": "lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\SimpleSAML\\Modules\\OAuth2\\": "tests/"
         }
     },
     "require": {
@@ -26,7 +31,8 @@
         "spomky-labs/jose"                          : "^7.0"
     },
     "require-dev": {
-        "simplesamlphp/simplesamlphp"               : "^1.14"
+        "simplesamlphp/simplesamlphp"               : "^1.15",
+        "phpunit/phpunit"                           : "^7.0"
     },
     "extra": {
         "branch-alias": {

@@ -15,6 +15,11 @@ use Nette\Forms\Form;
 class ClientForm extends Form
 {
     /**
+     * RFC3986. AppendixB. Parsing a URI Reference with a Regular Expression
+     */
+    const REGEX_URI = '/^[^:]+:\/\/?[^\s\/$.?#].[^\s]*$/';
+
+    /**
      * {@inheritdoc}
      */
     public function __construct($name)
@@ -48,12 +53,15 @@ class ClientForm extends Form
         ;
     }
 
+    /**
+     * @param Form $form
+     */
     public function validateRedirectUri($form)
     {
-        $values = $this->getValues();
+        $values = $form->getValues();
         $redirect_uris = $values['redirect_uri'];
         foreach ($redirect_uris as $redirect_uri) {
-            if (false === filter_var($redirect_uri, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)) {
+            if (!preg_match(self::REGEX_URI, $redirect_uri)) {
                 $this->addError('Invalid URI: '.$redirect_uri);
             }
         }
