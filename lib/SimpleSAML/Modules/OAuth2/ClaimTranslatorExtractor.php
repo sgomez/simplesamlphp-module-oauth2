@@ -35,7 +35,7 @@ class ClaimTranslatorExtractor extends ClaimExtractor
             "eduPersonNickname",
         ],
         "preferred_username" => [
-            "displayName",
+            "uid",
         ],
         "profile" => [
             "labeledURI",
@@ -88,7 +88,7 @@ class ClaimTranslatorExtractor extends ClaimExtractor
         foreach (self::$translationTable as $claim => $samlMatches) {
             foreach ($samlMatches as $samlMatch) {
                 if (array_key_exists($samlMatch, $samlAttributes)) {
-                    $claims[$claim] = $samlAttributes[$samlMatch][0];
+                    $claims[$claim] = current($samlAttributes[$samlMatch]);
                     break;
                 }
             }
