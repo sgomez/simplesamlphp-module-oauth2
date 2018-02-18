@@ -21,7 +21,7 @@
         }
     },
     "require": {
-        "php"                                       : ">=5.5.9",
+        "php"                                       : ">=7.0.0",
         "simplesamlphp/composer-module-installer"   : "^1.0",
         "league/oauth2-server"                      : "^6.1",
         "nette/forms"                               : "^2.4",
