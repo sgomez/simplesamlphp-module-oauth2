@@ -32,7 +32,8 @@
     },
     "require-dev": {
         "simplesamlphp/simplesamlphp"               : "^1.15",
-        "phpunit/phpunit"                           : "^7.0"
+        "phpunit/phpunit"                           : "^7.0",
+        "friendsofphp/php-cs-fixer": "^2.10"
     },
     "extra": {
         "branch-alias": {
