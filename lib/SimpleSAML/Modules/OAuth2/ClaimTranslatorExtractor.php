@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the simplesamlphp-module-oauth2.
  *
  * (c) Sergio Gómez <sergio@uco.es>
@@ -8,75 +9,73 @@
  * file that was distributed with this source code.
  */
 
-
 namespace SimpleSAML\Modules\OAuth2;
-
 
 use OpenIDConnectServer\ClaimExtractor;
 
 class ClaimTranslatorExtractor extends ClaimExtractor
 {
-    static $translationTable = [
-        "sub" => [
-            "eduPersonPrincipalName",
-            "eduPersonTargetedID",
-            "eduPersonUniqueId",
+    public static $translationTable = [
+        'sub' => [
+            'eduPersonPrincipalName',
+            'eduPersonTargetedID',
+            'eduPersonUniqueId',
         ],
-        "family_name" => [
-            "sn",
+        'family_name' => [
+            'sn',
         ],
-        "given_name" => [
-            "givenName",
+        'given_name' => [
+            'givenName',
         ],
-        "middle_name" => [
+        'middle_name' => [
             // Empty
         ],
-        "nickname" => [
-            "eduPersonNickname",
+        'nickname' => [
+            'eduPersonNickname',
         ],
-        "preferred_username" => [
-            "uid",
+        'preferred_username' => [
+            'uid',
         ],
-        "profile" => [
-            "labeledURI",
-            "description",
+        'profile' => [
+            'labeledURI',
+            'description',
         ],
-        "picture" => [
-            "jpegPhoto",
+        'picture' => [
+            'jpegPhoto',
         ],
-        "website" => [
+        'website' => [
             // Empty
         ],
-        "gender" => [
+        'gender' => [
             // Empty
         ],
-        "birthdate" => [
+        'birthdate' => [
             // Empty
         ],
-        "zoneinfo" => [
+        'zoneinfo' => [
             // Empty
         ],
-        "locale" => [
-            "preferredLanguage",
+        'locale' => [
+            'preferredLanguage',
         ],
-        "updated_at" => [
+        'updated_at' => [
             // Empty
         ],
-        "email" => [
-            "mail"
+        'email' => [
+            'mail',
         ],
-        "email_verified" => [
+        'email_verified' => [
             // Empty
         ],
-        "address" => [
-            "postalAddress",
+        'address' => [
+            'postalAddress',
         ],
-        "phone_number" => [
-            "mobile",
-            "telephoneNumber",
-            "homePhone",
+        'phone_number' => [
+            'mobile',
+            'telephoneNumber',
+            'homePhone',
         ],
-        "phone_number_verified" => [
+        'phone_number_verified' => [
             // Empty
         ],
     ];

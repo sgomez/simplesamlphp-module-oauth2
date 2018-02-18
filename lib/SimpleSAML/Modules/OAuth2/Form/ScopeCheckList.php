@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the simplesamlphp-module-oauth2.
  *
  * (c) Sergio Gómez <sergio@uco.es>
@@ -8,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-
 namespace SimpleSAML\Modules\OAuth2\Form;
-
 
 use Nette\Forms\Controls\CheckboxList;
 

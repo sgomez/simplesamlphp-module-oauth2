@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the simplesamlphp-module-oauth2.
  *
@@ -29,12 +30,13 @@ class OAuth2AuthorizationServer
     private static $instance;
 
     /**
-     * @return AuthorizationServer
      * @throws \Exception
+     *
+     * @return AuthorizationServer
      */
     public static function getInstance()
     {
-        if (self::$instance !== null) {
+        if (null !== self::$instance) {
             return self::$instance;
         }
 
@@ -48,7 +50,6 @@ class OAuth2AuthorizationServer
         $privateKeyPath = Config::getCertPath('oauth2_module.pem');
         $privateKey = new CryptKey($privateKeyPath, $passPhrase);
         $encryptionKey = Config::getSecretSalt();
-
 
         $identityProvider = new UserRepository();
         $claimExtractor = new ClaimTranslatorExtractor();

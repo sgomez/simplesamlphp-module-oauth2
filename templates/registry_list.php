@@ -1,16 +1,24 @@
 <?php
 
-$this->data['jquery'] = array('core' => TRUE, 'ui' => TRUE, 'css' => TRUE);
-$this->data['head']  = '<link rel="stylesheet" type="text/css" href="/' . $this->data['baseurlpath'] . 'module.php/oauth2/resources/style.css" />' . "\n";
+/*
+ * This file is part of the simplesamlphp-module-oauth2.
+ *
+ * (c) Sergio Gómez <sergio@uco.es>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+$this->data['jquery'] = ['core' => true, 'ui' => true, 'css' => true];
+$this->data['head'] = '<link rel="stylesheet" type="text/css" href="/'.$this->data['baseurlpath'].'module.php/oauth2/resources/style.css" />'."\n";
 $this->includeAtTemplateBase('includes/header.php');
 
-$moduleurlpath = '/' . $this->data['baseurlpath'].'/module.php/oauth2/';
+$moduleurlpath = '/'.$this->data['baseurlpath'].'/module.php/oauth2/';
 
 if (!empty($this->data['clients'])) {
     $clients = [];
 
     foreach ($this->data['clients'] as $client) {
-
         $makeList = function ($initial, $item) {
             return  "{$initial} <li>{$item}</li>";
         };
@@ -66,7 +74,6 @@ EOD;
 
     $clients = implode(' ', $clients);
 } else {
-
     $clients = <<< EOD
     <table class="metalist">
         <tr>
@@ -87,6 +94,6 @@ $page = <<< EOD
     <a href="{$moduleurlpath}registry.new.php" class="button">Add new client</a>
 EOD;
 
-echo($page);
+echo $page;
 
 $this->includeAtTemplateBase('includes/footer.php');

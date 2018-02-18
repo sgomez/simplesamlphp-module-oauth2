@@ -1,6 +1,7 @@
 <?php
+
 /*
- * This file is part of the jt2016-uco-spa.
+ * This file is part of the simplesamlphp-module-oauth2.
  *
  * (c) Sergio Gómez <sergio@uco.es>
  *
@@ -74,6 +75,7 @@ class UserRepository extends AbstractDBALRepository implements UserRepositoryInt
     /**
      * @param $id
      * @param $attributes
+     *
      * @return int
      */
     public function updateUser($id, $attributes)
@@ -102,12 +104,12 @@ class UserRepository extends AbstractDBALRepository implements UserRepositoryInt
     {
         $user = $this->conn->fetchAssoc(
             "SELECT * FROM {$this->getTableName()} WHERE id = ?", [
-                $userIdentifier
+                $userIdentifier,
             ], [
-                'string'
+                'string',
             ]
         );
-        
+
         if ($user) {
             $user['attributes'] = $this->conn->convertToPHPValue($user['attributes'], 'json_array');
         }
@@ -117,6 +119,7 @@ class UserRepository extends AbstractDBALRepository implements UserRepositoryInt
 
     /**
      * @param $userIdentifier
+     *
      * @throws \Doctrine\DBAL\Exception\InvalidArgumentException
      */
     public function delete($userIdentifier)
@@ -139,6 +142,7 @@ class UserRepository extends AbstractDBALRepository implements UserRepositoryInt
 
     /**
      * @param $userId
+     *
      * @return mixed
      */
     public function getAttributes($userId)

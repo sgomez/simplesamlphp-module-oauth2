@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the simplesamlphp-module-oauth2.
  *
@@ -26,7 +27,7 @@ class ScopeRepository implements ScopeRepositoryInterface
 
         $scopes = $oauth2config->getArray('scopes');
 
-        if (array_key_exists($identifier, $scopes) === false) {
+        if (false === array_key_exists($identifier, $scopes)) {
             return null;
         }
 
@@ -54,7 +55,7 @@ class ScopeRepository implements ScopeRepositoryInterface
         $userIdentifier = null
     ) {
         return array_filter($scopes, function (ScopeEntityInterface $scope) use ($clientEntity) {
-            return in_array($scope->getIdentifier(), $clientEntity->getScopes());
+            return in_array($scope->getIdentifier(), $clientEntity->getScopes(), true);
         });
     }
 }

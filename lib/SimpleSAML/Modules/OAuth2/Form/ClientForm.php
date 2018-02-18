@@ -1,6 +1,7 @@
 <?php
+
 /*
- * This file is part of the simplesamlphp.
+ * This file is part of the simplesamlphp-module-oauth2.
  *
  * (c) Sergio Gómez <sergio@uco.es>
  *
@@ -15,7 +16,7 @@ use Nette\Forms\Form;
 class ClientForm extends Form
 {
     /**
-     * RFC3986. AppendixB. Parsing a URI Reference with a Regular Expression
+     * RFC3986. AppendixB. Parsing a URI Reference with a Regular Expression.
      */
     const REGEX_URI = '/^[^:]+:\/\/?[^\s\/$.?#].[^\s]*$/';
 

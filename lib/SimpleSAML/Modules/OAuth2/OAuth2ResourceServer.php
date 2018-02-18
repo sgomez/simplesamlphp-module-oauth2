@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the simplesamlphp-module-oauth2.
  *
@@ -21,7 +22,7 @@ class OAuth2ResourceServer
 
     public static function getInstance()
     {
-        if (self::$instance !== null) {
+        if (null !== self::$instance) {
             return self::$instance;
         }
 

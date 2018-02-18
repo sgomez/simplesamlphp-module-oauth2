@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the simplesamlphp-module-oauth2.
  *
  * (c) Sergio Gómez <sergio@uco.es>
@@ -8,15 +9,7 @@
  * file that was distributed with this source code.
  */
 
-/**
- * Created by PhpStorm.
- * User: sergio
- * Date: 14/02/18
- * Time: 18:04
- */
-
 namespace Tests\SimpleSAML\Modules\OAuth2\Form;
-
 
 use PHPUnit\Framework\TestCase;
 use SimpleSAML\Modules\OAuth2\Form\ClientForm;
@@ -49,6 +42,6 @@ class ClientFormTest extends TestCase
             ]);
 
         $form->validateRedirectUri($form);
-        $this->assertSame($result,empty($form->getErrors()));
+        $this->assertSame($result, empty($form->getErrors()));
     }
 }

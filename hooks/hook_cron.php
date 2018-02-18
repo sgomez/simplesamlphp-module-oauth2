@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the simplesamlphp-module-oauth2.
  *
@@ -20,7 +21,7 @@ function oauth2_hook_cron(&$croninfo)
 
     $oauth2config = SimpleSAML_Configuration::getOptionalConfig('module_oauth2.php');
 
-    if (is_null($oauth2config->getValue('cron_tag', 'hourly'))) {
+    if (null === $oauth2config->getValue('cron_tag', 'hourly')) {
         return;
     }
     if ($oauth2config->getValue('cron_tag', null) !== $croninfo['tag']) {

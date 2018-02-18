@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the simplesamlphp-module-oauth2.
  *
  * (c) Sergio Gómez <sergio@uco.es>
@@ -8,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Tests\SimpleSAML\Modules\OAuth2;
-
 
 use PHPUnit\Framework\TestCase;
 use SimpleSAML\Modules\OAuth2\ClaimTranslatorExtractor;
@@ -32,52 +31,51 @@ class ClaimTranslatorExtractorTest extends TestCase
             // Translate single value
             [
                 [
-                    'eduPersonPrincipalName' => [ 'johndoe' ],
+                    'eduPersonPrincipalName' => ['johndoe'],
                 ],
                 [
                     'sub' => 'johndoe',
-                ]
+                ],
             ],
             // Translate multiple value
             [
                 [
-                    'mail' => [ 'johndoe@example.com', 'john@example.com' ],
+                    'mail' => ['johndoe@example.com', 'john@example.com'],
                 ],
                 [
                     'email' => 'johndoe@example.com',
-                ]
+                ],
             ],
             // Translate by order preference
             [
                 [
-                    'eduPersonPrincipalName' => [ 'johndoe' ],
-                    'eduPersonTargetedID' => [ 'sha1sum' ],
+                    'eduPersonPrincipalName' => ['johndoe'],
+                    'eduPersonTargetedID' => ['sha1sum'],
                 ],
                 [
                     'sub' => 'johndoe',
-                ]
+                ],
             ],
             // Translate multiple
             [
                 [
-                    'eduPersonPrincipalName' => [ 'johndoe' ],
-                    'mail' => [ 'johndoe@example.com' ],
+                    'eduPersonPrincipalName' => ['johndoe'],
+                    'mail' => ['johndoe@example.com'],
                 ],
                 [
                     'sub' => 'johndoe',
                     'email' => 'johndoe@example.com',
-                ]
+                ],
             ],
             // Remove unknown
             [
                 [
-                    'uid' => [ 'johndoe' ],
+                    'uid' => ['johndoe'],
                 ],
                 [
                     // Empty.
-                ]
+                ],
             ],
-
         ];
     }
 
@@ -96,8 +94,8 @@ class ClaimTranslatorExtractorTest extends TestCase
     {
         $claimTranslatorExtractor = new ClaimTranslatorExtractor();
         $extractedClaims = $claimTranslatorExtractor->extract(['email'], [
-                'eduPersonPrincipalName' => [ 'johndoe' ],
-                'mail' => [ 'johndoe@example.com' ],
+                'eduPersonPrincipalName' => ['johndoe'],
+                'mail' => ['johndoe@example.com'],
             ]
         );
 

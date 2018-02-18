@@ -1,9 +1,14 @@
 <?php
-/**
- * Hook to add link to the frontpage.
+
+/*
+ * This file is part of the simplesamlphp-module-oauth2.
  *
- * @param array &$links The links on the frontpage, split into sections
+ * (c) Sergio Gómez <sergio@uco.es>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 function oauth2_hook_frontpage(&$links)
 {
     assert('is_array($links)');

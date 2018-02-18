@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the simplesamlphp-module-oauth2.
  *
@@ -44,11 +45,12 @@ class ClientEntity implements ClientEntityInterface
 
     /**
      * ClientEntity constructor.
+     *
      * @param string $name
      * @param string $secret
      * @param string $redirectUri
      * @param string $authSource
-     * @param array $scopes
+     * @param array  $scopes
      */
     public function __construct($identifier, $name, $secret, $redirectUri, $authSource, array $scopes)
     {

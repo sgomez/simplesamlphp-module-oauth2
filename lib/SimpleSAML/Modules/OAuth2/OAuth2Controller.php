@@ -54,7 +54,7 @@ abstract class OAuth2Controller
     public static function invoke()
     {
         $oauth2config = \SimpleSAML_Configuration::getConfig('module_oauth2.php');
-        $class = new static( $oauth2config);
+        $class = new static($oauth2config);
 
         $request = ServerRequestFactory::fromGlobals();
         $server = OAuth2AuthorizationServer::getInstance();
