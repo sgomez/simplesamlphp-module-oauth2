@@ -19,7 +19,7 @@ class ClientRepository extends AbstractDBALRepository implements ClientRepositor
     /**
      * {@inheritdoc}
      */
-    public function getClientEntity($clientIdentifier, $grantType, $clientSecret = null, $mustValidateSecret = true)
+    public function getClientEntity($clientIdentifier, $grantType = null, $clientSecret = null, $mustValidateSecret = true)
     {
         /** @var \SimpleSAML\Modules\OAuth2\Entity\ClientEntity $entity */
         $entity = $this->find($clientIdentifier);
