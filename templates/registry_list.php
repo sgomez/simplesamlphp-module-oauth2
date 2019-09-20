@@ -4,7 +4,7 @@ $this->data['jquery'] = array('core' => TRUE, 'ui' => TRUE, 'css' => TRUE);
 $this->data['head']  = '<link rel="stylesheet" type="text/css" href="/' . $this->data['baseurlpath'] . 'module.php/oauth2/resources/style.css" />' . "\n";
 $this->includeAtTemplateBase('includes/header.php');
 
-$moduleurlpath = '/' . $this->data['baseurlpath'].'/module.php/oauth2/';
+$moduleurlpath = '/' . $this->data['baseurlpath'].'module.php/oauth2/';
 
 if (!empty($this->data['clients'])) {
     $clients = [];
